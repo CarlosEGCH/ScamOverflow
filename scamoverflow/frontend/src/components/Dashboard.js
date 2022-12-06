@@ -4,7 +4,7 @@ export default function Dashboard(){
 
     return(
         <>
-            Dashboard
+            <p style={{marginTop: "20px"}}>Dash</p>
         </>
     )
 }

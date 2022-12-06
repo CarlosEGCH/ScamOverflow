@@ -73,3 +73,39 @@ ul{
 ul li{
     width: 50px;
 }
+
+/* ======= Mobile Navbar Styles ======= */
+
+.navbar-mobile-wrapper{
+    height: 50px;
+    width: 100vw;
+    background-color: #1E2835;
+    color: #40ACFF;
+}
+.navbar-mobile-wrapper
+.navbar-mobile-container{
+    display: flex;
+    height: 100%;
+    flex-direction: row;
+    align-items: center;
+    font-size: 1.1rem;
+    justify-content: space-between;
+    margin: 0px 10px;
+}
+
+.navbar-mobile-wrapper
+.navbar-mobile-container
+.navbar-mobile-logo{
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    align-items: center;
+}
+
+.navbar-mobile-wrapper
+.navbar-mobile-container
+.navbar-mobile-logo
+img{
+    height: 40px;
+    width: 40px;
+}
