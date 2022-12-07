@@ -1,0 +1,121 @@
+.dashboard-wrapper
+.dashboard-content
+.middle-column
+.posts
+.post-wrapper{
+    background: #FEFEFF;
+    box-shadow: 1px 1px 50px -20px rgba(0, 0, 0, 0.25);
+    border-radius: 14px;
+    margin: 20px 0px;
+}
+
+.dashboard-wrapper
+.dashboard-content
+.middle-column
+.posts
+.post-wrapper
+.header{
+    display: flex;
+    flex-direction: row;
+    padding: 10px 20px;
+    justify-content: space-between;
+    border-bottom: 1px solid #D1D2D2;
+}
+
+.dashboard-wrapper
+.dashboard-content
+.middle-column
+.posts
+.post-wrapper
+.header img{
+    height: 50px;
+    width: 50px;
+    border-radius: 100%;
+}
+
+
+.dashboard-wrapper
+.dashboard-content
+.middle-column
+.posts
+.post-wrapper
+.header
+.info{
+    width: 60%;
+    margin-right: 60px;
+}
+
+.dashboard-wrapper
+.dashboard-content
+.middle-column
+.posts
+.post-wrapper
+.body{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px 20px;
+    border-bottom: 1px solid #D1D2D2;
+}
+
+.dashboard-wrapper
+.dashboard-content
+.middle-column
+.posts
+.post-wrapper
+.feedback{
+    border-bottom: 1px solid #D1D2D2;
+    display: flex;
+    flex-direction: row;
+    padding: 10px 10px;
+    gap: 20px;
+}
+
+.dashboard-wrapper
+.dashboard-content
+.middle-column
+.posts
+.post-wrapper
+.feedback
+img{
+    height: 24px;
+    width: 24px;
+}
+
+.dashboard-wrapper
+.dashboard-content
+.middle-column
+.posts
+.post-wrapper
+.feedback
+p{
+    color: #558491;
+}
+
+
+.dashboard-wrapper
+.dashboard-content
+.middle-column
+.posts
+.post-wrapper
+.feedback > div{
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+}
+
+.dashboard-wrapper
+.dashboard-content
+.middle-column
+.posts
+.post-wrapper
+.comment{
+    display: flex;
+    flex-direction: row;
+    padding: 10px 10px;
+    gap: 10px;
+}
+
+
+
+
