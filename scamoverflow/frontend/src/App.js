@@ -7,7 +7,9 @@ import Dashboard from "./components/Dashboard";
 import Login from "./components/Authentication/Login";
 import Admins from "./components/Admins";
 import Form from "./components/Tickets/Form"
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+import Cookies from 'universal-cookie';
 
 function App() {
 
@@ -26,7 +28,42 @@ function App() {
    * 
    */
 
+  const cookies = new Cookies();
   const [logged, setLogged] = useState(false);
+
+
+  const handleRegister = async () => {
+    try {
+      
+      if(cookies.get('Bearer') != null){
+
+        await fetch(`http://localhost:8080/api/register`, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${cookies.get('Bearer')}`
+        }
+      })
+      .then(res => res.json())
+      .then( async (data) => {
+        setLogged(true);
+        console.log("Logged Successfully!")
+      })
+      .catch((e) => {
+        console.log('Fetching error: ', e);
+      })
+      }
+
+    } catch (e) {
+      console.log('Erro encontrado: ', e);
+    }
+  }
+
+  useEffect(() => {
+      handleRegister();
+  }, [])
+  
 
   return (
       <BrowserRouter>
@@ -35,7 +72,7 @@ function App() {
           <Route index path="/" element={<Dashboard />} />
           <Route path="/login" element={<Login />} />
           <Route path="/admins" element={<Admins />} />
-          <Route path="/open-ticket" element={logged ? <Form /> : <Login />} />
+          <Route path="/open-ticket" element={logged ? <Form /> : <Login onRegister={handleRegister} cookies={cookies} />} />
         </Routes>
     </BrowserRouter>
   );

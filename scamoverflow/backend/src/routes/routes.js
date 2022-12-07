@@ -39,7 +39,7 @@ const upload = multer({storage: storage}).single('file')
  * -----------------------
  */
 
-
+/*
 router.post("/upload",(req, res) => {
     upload(req, res, (err) => {
         if (err){
@@ -51,6 +51,7 @@ router.post("/upload",(req, res) => {
     }
     })
 })
+*/
 
 router.post("/reopen-ticket", async (req, res) => {
     const { ticketId, category, title, description, email } = req.body;
@@ -74,7 +75,9 @@ router.post("/reopen-ticket", async (req, res) => {
 router.post("/signup", async (req, res) => {
     try {
 
-        const { name, studentId, phone, email, password, image } = req.body;
+        //const { name, phone, email, password, image } = req.body;
+        
+        const { name, phone, email, password } = req.body;
         const hash = await bcrypt.hash(password, 10);
 
         const user = await User.findOne({ email });
@@ -85,18 +88,40 @@ router.post("/signup", async (req, res) => {
 
         const newUser = new User({
             name: name,
-            studentId : studentId,
             phone: phone,
             email: email,
             password: hash,
             role: 'user',
-            image: image
+            //image: image
         })
         await newUser.save();
 
         const token = jwt.sign({_id: newUser._id}, process.env.SECRET_KEY);
 
         res.status(200).json({ token });
+    } catch (e) {
+        console.log("Request error: " + e);
+    }
+})
+
+router.post("/login", async (req, res) => {
+    try {
+        const { email, password } = req.body;
+
+        const user = await User.findOne({ email: email});
+
+        if(!user) return res.status(401).send("The email is not associated with any account in existence");
+
+        const validPass = await bcrypt.compare(password, user.password);
+
+        if(!validPass) return res.status(401).send("Wrong password");
+
+        //Create token after successful login
+
+        const token = jwt.sign({ _id: user._id }, process.env.SECRET_KEY);
+
+        return res.status(200).json({ token, name: user.name, image: user.image, role: user.role });
+
     } catch (e) {
         console.log("Request error: " + e);
     }
@@ -180,29 +205,6 @@ router.post("/get-user", verifyToken, async (req, res) => {
 
     } catch (error) {
         console.log("Request error: " + error);
-    }
-})
-
-router.post("/login", async (req, res) => {
-    try {
-        const { email, password } = req.body;
-
-        const user = await User.findOne({ email: email});
-
-        if(!user) return res.status(401).send("The email is not associated with any account in existence");
-
-        const validPass = await bcrypt.compare(password, user.password);
-
-        if(!validPass) return res.status(401).send("Wrong password");
-
-        //Create token after successful login
-
-        const token = jwt.sign({ _id: user._id }, process.env.SECRET_KEY);
-
-        return res.status(200).json({ token, name: user.name, image: user.image, role: user.role });
-
-    } catch (e) {
-        console.log("Request error: " + e);
     }
 })
 
@@ -447,9 +449,12 @@ router.post("/ticket-submit", async (req, res) => {
 
 router.post("/register", verifyToken, async (req, res) => {
     const {userId} = req;
-    const user = await User.findOne({ _id: userId}, { _id: 1, name: 1, image: 1, role: 1, categories: 1});
-console.log(userId)
-    res.status(200).json(user);
+    if(userId != ""){
+        const user = await User.findOne({ _id: userId}, { _id: 1, name: 1, image: 1, role: 1, categories: 1});
+        res.status(200).json(user);
+    }else{
+        res.status(301).json({error: "No user"})
+    }
 })
 
 router.get("/users", async (req, res) => {
@@ -493,12 +498,18 @@ function verifyToken(req, res, next){
         return res.status(401).send("Unauthorized request");
     }
 
-    //Verify token and get the info that we introduced into it
-    const payload = jwt.verify(token, process.env.SECRET_KEY);
+    req.userId = "";
 
-    //Introduce the payload into the request body
-    req.userId = payload._id;
+    try{
+        //Verify token and get the info that we introduced into it
+        const payload = jwt.verify(token, process.env.SECRET_KEY);
 
+        //Introduce the payload into the request body
+        req.userId = payload._id;
+
+    }catch(e){
+        console.log("Not a valid Bearer")
+    }
     next();
 }
 
