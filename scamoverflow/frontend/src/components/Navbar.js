@@ -11,6 +11,8 @@ import menuIcon from "../assets/menu-05.svg"
 
 import React from "react";
 
+import { useNavigate } from "react-router-dom";
+
 import {
   Drawer,
   DrawerBody,
@@ -37,16 +39,18 @@ export default function Navbar(){
 
 function Desktop(){
 
+    const navigate = useNavigate();
+
     return(
         <div className="navbar-wrapper">
             <div className="navbar-container">
-                <div className="navbar-logo">
+                <div className="navbar-logo" onClick={() => navigate("/")}>
                     <img src={pageLogo} />
                     <p>ScamOverflow</p>
                 </div>
                 <div className="navbar-links">
                     <ul>
-                        <li>
+                        <li onClick={() => navigate("/open-ticket")}>
                             <img src={messageIcon} />
                             <p>Report Scam</p>
                         </li>
@@ -61,7 +65,7 @@ function Desktop(){
                         <li>
                             <img src={bellIcon} />
                         </li>
-                        <li>
+                        <li onClick={() => navigate("/login")}>
                             <img src={userIcon} />
                         </li>
                     </ul>
