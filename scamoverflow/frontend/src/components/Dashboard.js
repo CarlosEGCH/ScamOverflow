@@ -5,12 +5,29 @@ import pencilIcon from "../assets/pencil-03.svg"
 import imageIcon from "../assets/image.svg"
 import penIcon from "../assets/pen-tool-03.svg"
 import userIcon from "../assets/user-profile-circle.svg"
+import moderatorImage from "../assets/cr7.jpg"
+import cartIcon from "../assets/cart.svg"
+import phishingIcon from "../assets/user-profile-x.svg"
+import cryptoIcon from "../assets/crypto.svg"
+import hackingIcon from "../assets/hacking.svg"
+import phoneIcon from "../assets/phone.svg"
+import cardIcon from "../assets/card.svg"
+import malwareIcon from "../assets/malware.svg"
 
 import { Button, Select, Textarea } from '@chakra-ui/react'
 
 import Posts from "./Posts/Posts.js"
+import { useState } from "react"
 
 export default function Dashboard(){
+
+    const moderator = {
+        image: moderatorImage,
+        name: "Cristiano Ronaldo",
+        occupation: "Student at Harvard"
+    }
+
+    const [moderators, setModerators] = useState([moderator, moderator, moderator])
 
     return(
         <>
@@ -73,15 +90,68 @@ export default function Dashboard(){
                     </div>
                     <div className="right-column">
                         <div className="register">
-                            Register
+                            <p>Become an Associate</p>
+                            <Button width={"120px"} margin={"20px 0px"} colorScheme={"blue"}>Register Here!</Button>
                         </div>
                         <div className="moderators">
-                            Moderators
+                            <div className="header">
+                                <p>Meet the moderators</p>
+                            </div>
+                            {moderators.map((mod, key) => {
+                                return (<Moderator moderator={mod} key={key} />)
+                            })}
                         </div>
                         <div className="categories">
-                            Categories
+                            <div className="header">
+                                <p>Categories</p>
+                            </div>
+                            <div className="categories-list">
+                                <div className="category">
+                                    <img src={cartIcon} />
+                                    <p className="name">Online Shopping</p>
+                                </div>
+                                <div className="category">
+                                    <img src={phishingIcon} />
+                                    <p className="name">Phishing and Identity Theft</p>
+                                </div>
+                                <div className="category">
+                                    <img src={cryptoIcon} />
+                                    <p className="name">Cryptocurrency Scams</p>
+                                </div>
+                                <div className="category">
+                                    <img src={hackingIcon} />
+                                    <p className="name">Hacking</p>
+                                </div>
+                                <div className="category">
+                                    <img src={phoneIcon} />
+                                    <p className="name">Fake Tech Support</p>
+                                </div>
+                                <div className="category">
+                                    <img src={cardIcon} />
+                                    <p className="name">Fake Online Prizes</p>
+                                </div>
+                                <div className="category">
+                                    <img src={malwareIcon} />
+                                    <p className="name">Malware Scams</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </>
+    )
+}
+
+function Moderator({moderator}){
+
+    return(
+        <>
+            <div className="moderator-wrapper">
+                <img src={moderator.image} />
+                <div className="moderator-info">
+                    <p className="name">{moderator.name}</p>
+                    <p className="occupation">{moderator.occupation}</p>
                 </div>
             </div>
         </>
