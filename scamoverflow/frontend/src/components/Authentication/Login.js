@@ -1,15 +1,19 @@
 import "../../styles/Login.css"
 
-import { Button, Input } from '@chakra-ui/react'
+import { Button, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure } from '@chakra-ui/react'
 import { useState } from "react"
 import { Navigate, useNavigate } from "react-router-dom"
 
 export default function Login(props){
 
+    const { isOpen, onOpen, onClose } = useDisclosure();
+
     const [login, setLogin] = useState({email: "", password: ""});
+    const [signup, setSignup] = useState({name: "", email: "", phone: "", password: "", rpassword: ""})
     const navigate = useNavigate();
 
     const handleLoginSubmit = () => {
+      console.log(login)
       fetch(`http://localhost:8080/api/login`, {
         method: 'POST',
         body: JSON.stringify({
@@ -33,8 +37,49 @@ export default function Login(props){
       })
     }
 
+    const handleSignupSubmit = () => {
+
+      if(signup.password != signup.rpassword){
+        console.log("Different Passwords");
+        return;
+      }
+
+      fetch(`http://localhost:8080/api/signup`, {
+        method: 'POST',
+        body: JSON.stringify({
+          name: signup.name,
+          phone: signup.phone,
+          email: signup.email,
+          password: signup.password
+        }),
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(res => res.json())
+      .then(data => {
+        props.cookies.set('Bearer', data.token);
+        setSignup({email: "", password: "", name: "", phone: ""});
+        
+      })
+      .then(() => {props.onRegister(); navigate('/');})
+      .catch((e) => {
+        console.log("Something went wrong ", e);
+      })
+    }
+
     const handleLoginChange = (event) => {
       setLogin((prevState) => {
+        return {
+        ...prevState,
+        [event.target.name]: event.target.value,
+      }
+      })
+    }
+
+    const handleSignupChange = (event) => {
+      setSignup((prevState) => {
         return {
         ...prevState,
         [event.target.name]: event.target.value,
@@ -56,9 +101,30 @@ export default function Login(props){
                     <div className="right-column">
                         <p className="title">Sign Up</p>
                         <p className="info">Sign up if you don't have an account</p>
-                        <Button width="100px" variant={"outline"} colorScheme={"white"} margin="0 auto" borderRadius={"24px"} _hover={{backgroundColor: "#40ACFF"}}>Sign Up</Button>
+                        <Button onClick={onOpen} width="100px" variant={"outline"} colorScheme={"white"} margin="0 auto" borderRadius={"24px"} _hover={{backgroundColor: "#40ACFF"}}>Sign Up</Button>
                     </div>
                 </div>
+                <Modal isOpen={isOpen} onClose={onClose}>
+                <ModalOverlay />
+                <ModalContent>
+                  <ModalHeader>Sign Up</ModalHeader>
+                  <ModalCloseButton />
+                  <ModalBody display={"flex"} flexDirection={"column"} gap={"10px"}>
+                    <Input value={signup.name} onChange={handleSignupChange} name="name" placeholder='Name...' />
+                    <Input value={signup.email} onChange={handleSignupChange} name="email" placeholder='Email...' />
+                    <Input value={signup.phone} onChange={handleSignupChange} name="phone" placeholder='Phone number...' />
+                    <Input value={signup.password} onChange={handleSignupChange} name="password" placeholder='Password' />
+                    <Input value={signup.rpassword} onChange={handleSignupChange} name="rpassword" placeholder='Repeat password' />
+                  </ModalBody>
+
+                  <ModalFooter>
+                    <Button colorScheme='blue' mr={3} onClick={onClose}>
+                      Close
+                    </Button>
+                    <Button onClick={() => {onClose(); handleSignupSubmit(); }} width="100px" variant={"outline"} colorScheme={"white"}>Sign Up</Button>
+                  </ModalFooter>
+                </ModalContent>
+              </Modal>
             </div>
         </>
     )

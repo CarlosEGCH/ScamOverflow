@@ -23,8 +23,8 @@ export default function Posts(){
 
     return(
         <div className="posts-wrapper">
-            {posts.map(post => {
-              return (<Post post={post} />)
+            {posts.map((post, key) => {
+              return (<Post post={post} key={key} />)
             })}
         </div>
     )
