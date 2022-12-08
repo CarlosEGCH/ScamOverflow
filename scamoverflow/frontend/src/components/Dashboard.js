@@ -20,6 +20,8 @@ import { Button, Select, Textarea } from '@chakra-ui/react'
 import Posts from "./Posts/Posts.js"
 import { useEffect, useState } from "react"
 
+import { useNavigate } from "react-router-dom";
+
 export default function Dashboard(){
 
     const [moderators, setModerators] = useState([]);
@@ -167,9 +169,12 @@ export default function Dashboard(){
 
 function Moderator({moderator}){
 
+    const navigate = useNavigate();
+
+
     return(
         <>
-            <div className="moderator-wrapper">
+            <div className="moderator-wrapper" onClick={() => {navigate("/profile/"+moderator._id)}}>
                 <img src={userCircle} />
                 <div className="moderator-info">
                     <p className="name">{moderator.name}</p>
