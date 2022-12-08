@@ -36,7 +36,8 @@ img{
 .navbar-wrapper
 .navbar-container
 .navbar-links{
-    width: 900px;
+    margin-left: 100px;
+    width: 800px;
     font-size: 18px;
 }
 

@@ -425,17 +425,28 @@ router.post("/faq-submit", async (req, res) => {
 })
 
 
-router.post("/ticket-submit", async (req, res) => {
+/**
+ * /ticket-submit
+ * Allow users save a ticket after checking if the user is logged in.
+ * 
+ */
+
+router.post("/ticket-submit", verifyToken, async (req, res) => {
     try {
-        const { email, category, title, message, adminId, response } = req.body;
+        const {userId} = req;
+
+        if(userId == "") res.status(301).json({error: "Not logged in"})
+
+        const { category, description } = req.body;
+
+        const user = await User.findOne({ _id: userId});
 
         const newTicket = new Ticket({
-            email: email,
+            name: user.name,
+            email: user.email,
+            phone: user.phone,
             category: category.toLowerCase(),
-            title: title,
-            message: message,
-            adminId: adminId,
-            response: response
+            description: description
         })
 
         await newTicket.save();

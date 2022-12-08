@@ -16,7 +16,6 @@ function App() {
   /**
    * Prioritized Functional Requirements
    * 1) Description of why the account was banned
-   * 2) Create a Ticket
    * 3) Allow admins to answer tickets
    * 5) Notify users after a ticket has been answered
    * 6) Allow admins to validate tickets that have been submitted
@@ -71,7 +70,7 @@ function App() {
           <Route index path="/" element={<Dashboard />} />
           <Route path="/login" element={<Login />} />
           <Route path="/admins" element={<Admins />} />
-          <Route path="/open-ticket" element={logged ? <Form /> : <Login onRegister={handleRegister} cookies={cookies} />} />
+          <Route path="/open-ticket" element={logged ? <Form cookies={cookies} /> : <Login onRegister={handleRegister} cookies={cookies} />} />
         </Routes>
     </BrowserRouter>
   );
