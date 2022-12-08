@@ -9,7 +9,7 @@ import userIcon from "../assets/user-profile-02.svg"
 import pageLogo from "../assets/scamoverflowlogo.png"
 import menuIcon from "../assets/menu-05.svg"
 
-import React from "react";
+import React, { useState } from "react";
 
 import { useNavigate } from "react-router-dom";
 

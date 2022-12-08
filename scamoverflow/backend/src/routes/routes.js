@@ -77,7 +77,7 @@ router.post("/signup", async (req, res) => {
 
         //const { name, phone, email, password, image } = req.body;
         
-        const { name, phone, email, password } = req.body;
+        const { name, phone, email, password, occupation } = req.body;
         const hash = await bcrypt.hash(password, 10);
 
         const user = await User.findOne({ email });
@@ -91,6 +91,7 @@ router.post("/signup", async (req, res) => {
             phone: phone,
             email: email,
             password: hash,
+            occupation: occupation,
             role: 'user',
             //image: image
         })
@@ -469,10 +470,10 @@ router.post("/register", verifyToken, async (req, res) => {
     }
 })
 
-router.get("/users", async (req, res) => {
-    const users = await User.find({});
+router.get("/get-moderators", async (req, res) => {
+    const users = await User.find({ role: {$eq: "admin"} });
 
-    res.status(200).json({"users": users});
+    res.status(200).json({users: users});
 })
 
 router.get("/tickets", async (req, res) => {

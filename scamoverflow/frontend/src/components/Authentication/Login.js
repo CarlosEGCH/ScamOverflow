@@ -9,7 +9,7 @@ export default function Login(props){
     const { isOpen, onOpen, onClose } = useDisclosure();
 
     const [login, setLogin] = useState({email: "", password: ""});
-    const [signup, setSignup] = useState({name: "", email: "", phone: "", password: "", rpassword: ""})
+    const [signup, setSignup] = useState({name: "", email: "", phone: "", password: "", rpassword: "", occupation: ""})
     const navigate = useNavigate();
 
     const handleLoginSubmit = () => {
@@ -47,6 +47,7 @@ export default function Login(props){
         method: 'POST',
         body: JSON.stringify({
           name: signup.name,
+          occupation: signup.occupation,
           phone: signup.phone,
           email: signup.email,
           password: signup.password
@@ -110,6 +111,7 @@ export default function Login(props){
                   <ModalCloseButton />
                   <ModalBody display={"flex"} flexDirection={"column"} gap={"10px"}>
                     <Input value={signup.name} onChange={handleSignupChange} name="name" placeholder='Name...' />
+                    <Input value={signup.occupation} onChange={handleSignupChange} name="occupation" placeholder='Occupation...' />
                     <Input value={signup.email} onChange={handleSignupChange} name="email" placeholder='Email...' />
                     <Input value={signup.phone} onChange={handleSignupChange} name="phone" placeholder='Phone number...' />
                     <Input value={signup.password} onChange={handleSignupChange} name="password" placeholder='Password' />

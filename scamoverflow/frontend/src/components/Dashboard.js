@@ -5,7 +5,6 @@ import pencilIcon from "../assets/pencil-03.svg"
 import imageIcon from "../assets/image.svg"
 import penIcon from "../assets/pen-tool-03.svg"
 import userIcon from "../assets/user-profile-circle.svg"
-import moderatorImage from "../assets/cr7.jpg"
 import cartIcon from "../assets/cart.svg"
 import phishingIcon from "../assets/user-profile-x.svg"
 import cryptoIcon from "../assets/crypto.svg"
@@ -14,20 +13,43 @@ import phoneIcon from "../assets/phone.svg"
 import cardIcon from "../assets/card.svg"
 import malwareIcon from "../assets/malware.svg"
 
+import userCircle from "../assets/user-profile-circle.svg"
+
 import { Button, Select, Textarea } from '@chakra-ui/react'
 
 import Posts from "./Posts/Posts.js"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 export default function Dashboard(){
 
+    const [moderators, setModerators] = useState([]);
+
     const moderator = {
-        image: moderatorImage,
+        image: userCircle,
         name: "Cristiano Ronaldo",
         occupation: "Student at Harvard"
     }
 
-    const [moderators, setModerators] = useState([moderator, moderator, moderator])
+    const getModerators = () => {
+        fetch(`http://localhost:8080/api/get-moderators`, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(res => res.json())
+      .then(data => {
+        setModerators(data.users)
+      })
+      .catch((e) => {
+        console.log("Something went wrong ", e);
+      })
+    }
+
+    useEffect(() => {
+        getModerators();
+    }, [])
 
     return(
         <>
@@ -148,7 +170,7 @@ function Moderator({moderator}){
     return(
         <>
             <div className="moderator-wrapper">
-                <img src={moderator.image} />
+                <img src={userCircle} />
                 <div className="moderator-info">
                     <p className="name">{moderator.name}</p>
                     <p className="occupation">{moderator.occupation}</p>

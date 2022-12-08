@@ -30,7 +30,7 @@ function App() {
 
   const cookies = new Cookies();
   const [logged, setLogged] = useState(false);
-  const [userId, setUserId] = useState("");
+  const [userId, setUserId] = useState("0");
 
 
   const handleRegister = async () => {
