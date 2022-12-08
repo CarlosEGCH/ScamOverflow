@@ -462,7 +462,7 @@ router.post("/ticket-submit", verifyToken, async (req, res) => {
 router.post("/register", verifyToken, async (req, res) => {
     const {userId} = req;
     if(userId != ""){
-        const user = await User.findOne({ _id: userId}, { _id: 1, name: 1, image: 1, role: 1, categories: 1});
+        const user = await User.findOne({ _id: userId}, { _id: 1, name: 1, role: 1});
         res.status(200).json(user);
     }else{
         res.status(301).json({error: "No user"})

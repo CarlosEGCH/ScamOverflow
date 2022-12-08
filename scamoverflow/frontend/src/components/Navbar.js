@@ -26,18 +26,18 @@ import {
   useDisclosure
 } from '@chakra-ui/react'
 
-export default function Navbar(){
+export default function Navbar(props){
 
   const { width } = useViewport();
 
     return(
         <>
-            {width > 900 ? <Desktop /> : <Mobile />}
+            {width > 900 ? <Desktop userId={props.userId} /> : <Mobile />}
         </>
     )
 }
 
-function Desktop(){
+function Desktop(props){
 
     const navigate = useNavigate();
 
@@ -65,7 +65,7 @@ function Desktop(){
                         <li>
                             <img src={bellIcon} />
                         </li>
-                        <li onClick={() => navigate("/login")}>
+                        <li onClick={() => navigate("/profile/" + props.userId)}>
                             <img src={userIcon} />
                         </li>
                     </ul>

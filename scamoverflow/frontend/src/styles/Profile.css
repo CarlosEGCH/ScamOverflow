@@ -1,0 +1,168 @@
+.profile-wrapper{
+    background-color: #ECF3F6;
+    display: flex;
+    justify-content: center;
+    padding-top: 100px;
+    width: 100vw;
+    overflow: hidden;
+}
+
+.profile-wrapper
+.profile-content{
+    background-color: #FEFEFF;
+    box-shadow: 1px 1px 50px -20px rgba(0, 0, 0, 0.25);
+    border-radius: 14px;
+    width: 70%;
+    display: flex;
+    flex-direction: row;
+}
+
+.profile-wrapper
+.profile-content
+.left-column{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 50%;
+    padding: 120px 0px;
+}
+
+
+.profile-wrapper
+.profile-content
+.left-column
+img{
+    width: 200px;
+    height: 200px;
+    border-radius: 100%;
+}
+
+
+.profile-wrapper
+.profile-content
+.left-column
+.name{
+    font-size: 34px;
+    font-weight: 500;
+}
+
+
+.profile-wrapper
+.profile-content
+.left-column
+.occupation{
+    font-size: 18px;
+    color: #558491;
+    font-weight: 500;
+}
+
+
+.profile-wrapper
+.profile-content
+.left-column
+.location{
+    font-size: 18px;
+    color: #558491;
+    font-weight: 500;
+}
+
+.profile-wrapper
+.profile-content
+.left-column
+.email{
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.profile-wrapper
+.profile-content
+.left-column
+.phone{
+    font-size: 18px;
+    font-weight: 500;
+}
+
+/* ======== Right Column Styles ======== */
+
+.profile-wrapper
+.profile-content
+.right-column{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 50%;
+    padding: 120px 0px;
+}
+
+.profile-wrapper
+.profile-content
+.right-column
+.posts{
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+}
+
+.profile-wrapper
+.profile-content
+.right-column
+.post-wrapper{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 0 auto;
+    padding: 0px 50px;
+}
+
+
+.profile-wrapper
+.profile-content
+.right-column
+.title{
+    font-size: 30px;
+    font-weight: 500;
+    margin-bottom: 20px;
+}
+
+
+.profile-wrapper
+.profile-content
+.right-column
+.post-wrapper
+.title{
+    font-size: 18px;
+    margin: 0;
+}
+
+.profile-wrapper
+.profile-content
+.right-column
+.post-wrapper
+.description{
+    color: #558491;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.profile-wrapper
+.profile-content
+.right-column
+.post-wrapper
+.feedback
+img{
+    width: 30px;
+    height: 30px; 
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

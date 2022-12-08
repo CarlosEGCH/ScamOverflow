@@ -8,6 +8,7 @@ import Login from "./components/Authentication/Login";
 import Admins from "./components/Admins";
 import Form from "./components/Tickets/Form";
 import Admin from "./components/Tickets/Admin";
+import Profile from "./components/Profiles/Profile";
 import { useEffect, useState } from "react";
 
 import Cookies from 'universal-cookie';
@@ -29,6 +30,7 @@ function App() {
 
   const cookies = new Cookies();
   const [logged, setLogged] = useState(false);
+  const [userId, setUserId] = useState("");
 
 
   const handleRegister = async () => {
@@ -47,7 +49,7 @@ function App() {
       .then(res => res.json())
       .then( async (data) => {
         setLogged(true);
-        console.log("Logged Successfully!")
+        setUserId(data._id);
       })
       .catch((e) => {
         console.log('Fetching error: ', e);
@@ -66,13 +68,14 @@ function App() {
 
   return (
       <BrowserRouter>
-      <Navbar />
+      <Navbar userId={userId} />
         <Routes>
           <Route index path="/" element={<Dashboard />} />
           <Route path="/login" element={<Login onRegister={handleRegister} cookies={cookies} />} />
           <Route path="/admins" element={<Admins />} />
           <Route path="/open-ticket" element={logged ? <Form cookies={cookies} /> : <Login onRegister={handleRegister} cookies={cookies} />} />
           <Route path="/tickets" element={logged ? <Admin cookies={cookies} /> : <Login onRegister={handleRegister} cookies={cookies} />} />
+          <Route path="/profile/:userid" element={logged ? <Profile cookies={cookies} /> : <Login onRegister={handleRegister} cookies={cookies} />} />
         </Routes>
     </BrowserRouter>
   );
