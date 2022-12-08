@@ -445,8 +445,9 @@ router.post("/ticket-submit", verifyToken, async (req, res) => {
             name: user.name,
             email: user.email,
             phone: user.phone,
-            category: category.toLowerCase(),
-            description: description
+            category: category,
+            description: description,
+            state: "new"
         })
 
         await newTicket.save();
@@ -474,10 +475,9 @@ router.get("/users", async (req, res) => {
     res.status(200).json({"users": users});
 })
 
-router.post("/tickets", async (req, res) => {
-    const { categories } = req.body;
+router.get("/tickets", async (req, res) => {
 
-    const tickets = await Ticket.find({adminId : {$eq : ''}, category: {$in : categories}}, { _id: 1, email: 1, category: 1, title: 1, message: 1, senderId: 1, createdAt: 1});
+    const tickets = await Ticket.find();
 
     res.status(200).json({"tickets": tickets});
 })

@@ -6,7 +6,8 @@ import Navbar from "./components/Navbar";
 import Dashboard from "./components/Dashboard";
 import Login from "./components/Authentication/Login";
 import Admins from "./components/Admins";
-import Form from "./components/Tickets/Form"
+import Form from "./components/Tickets/Form";
+import Admin from "./components/Tickets/Admin";
 import { useEffect, useState } from "react";
 
 import Cookies from 'universal-cookie';
@@ -68,9 +69,10 @@ function App() {
       <Navbar />
         <Routes>
           <Route index path="/" element={<Dashboard />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<Login onRegister={handleRegister} cookies={cookies} />} />
           <Route path="/admins" element={<Admins />} />
           <Route path="/open-ticket" element={logged ? <Form cookies={cookies} /> : <Login onRegister={handleRegister} cookies={cookies} />} />
+          <Route path="/tickets" element={logged ? <Admin cookies={cookies} /> : <Login onRegister={handleRegister} cookies={cookies} />} />
         </Routes>
     </BrowserRouter>
   );

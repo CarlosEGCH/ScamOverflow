@@ -54,7 +54,7 @@ function Desktop(){
                             <img src={messageIcon} />
                             <p>Report Scam</p>
                         </li>
-                        <li>
+                        <li onClick={() => navigate("/tickets")}>
                             <img src={ticketIcon} />
                             <p>Tickets</p>
                         </li>

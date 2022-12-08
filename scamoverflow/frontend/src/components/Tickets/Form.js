@@ -52,13 +52,13 @@ export default function Form(props){
                 <div className="ticket-form-container">
                     <p className="title">Report a Scam</p>
                     <Select value={ticket.category} onChange={handleTicketChange} name="category" placeholder="Select a Category..." className="input" backgroundColor={"#ECF3F6"} color={"#558491"}>
-                        <option value='onlineshopping'>Online Shopping</option>
-                        <option value='phishing'>Phishing and Identity Theft</option>
-                        <option value='crypto'>Cryptocurrency Scams</option>
-                        <option value='hacking'>Hacking</option>
-                        <option value='techsupport'>Fake Tech Support</option>
-                        <option value='onlineprizes'>Fake Online Prizes</option>
-                        <option value='malware'>Malware Scams</option>
+                        <option value='Online Shopping'>Online Shopping</option>
+                        <option value='Phishing and Identity Theft'>Phishing and Identity Theft</option>
+                        <option value='Cryptocurrency Scams'>Cryptocurrency Scams</option>
+                        <option value='Hacking'>Hacking</option>
+                        <option value='Fake Tech Support'>Fake Tech Support</option>
+                        <option value='Fake Online Prizes'>Fake Online Prizes</option>
+                        <option value='Malware Scams'>Malware Scams</option>
                     </Select>
                     <Textarea value={ticket.description} onChange={handleTicketChange} name="description" className="textarea" backgroundColor={"#ECF3F6"} placeholder="Description"></Textarea>
                     <div className="buttons">

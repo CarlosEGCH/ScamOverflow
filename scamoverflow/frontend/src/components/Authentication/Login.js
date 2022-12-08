@@ -13,7 +13,6 @@ export default function Login(props){
     const navigate = useNavigate();
 
     const handleLoginSubmit = () => {
-      console.log(login)
       fetch(`http://localhost:8080/api/login`, {
         method: 'POST',
         body: JSON.stringify({
