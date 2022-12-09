@@ -15,22 +15,16 @@ import malwareIcon from "../assets/malware.svg"
 
 import userCircle from "../assets/user-profile-circle.svg"
 
-import { Button, Select, Textarea } from '@chakra-ui/react'
+import { Button, Select, Textarea, Input } from '@chakra-ui/react'
 
 import Posts from "./Posts/Posts.js"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 
 import { useNavigate } from "react-router-dom";
 
-export default function Dashboard(){
+export default function Dashboard({cookies}){
 
     const [moderators, setModerators] = useState([]);
-
-    const moderator = {
-        image: userCircle,
-        name: "Cristiano Ronaldo",
-        occupation: "Student at Harvard"
-    }
 
     const getModerators = () => {
         fetch(`http://localhost:8080/api/get-moderators`, {
@@ -75,32 +69,7 @@ export default function Dashboard(){
                         </div>
                     </div>
                     <div className="middle-column">
-                        <div className="post-creation">
-                            <div className="header">
-                                <div className="share">
-                                    <img src={pencilIcon} />
-                                    <p>Share a Post</p>
-                                </div>
-                                <div className="upload">
-                                    <img src={imageIcon} />
-                                    <p>Upload an Image</p>
-                                </div>
-                                <div className="write">
-                                    <img src={penIcon} />
-                                    <p>Write an Article</p>
-                                </div>
-                            </div>
-                            <div className="body">
-                                <div className="user">
-                                    <img src={userIcon} />
-                                    <Textarea border={"none"} placeholder={"Write your thoughts..."} />
-                                </div>
-                            </div>
-                            <div className="footer">
-                                <Button backgroundColor={"#1E2835"} color={"white"}>Discard</Button>
-                                <Button backgroundColor={"#008CF8"} color={"white"}>Publish</Button>
-                            </div>
-                        </div>
+                        <Postcreation cookies={cookies} />
                         <div className="filter">
                             <Select color={"#558491"} borderColor={"#558491"}>
                                 <option value='option1'>Popular</option>
@@ -179,6 +148,93 @@ function Moderator({moderator}){
                 <div className="moderator-info">
                     <p className="name">{moderator.name}</p>
                     <p className="occupation">{moderator.occupation}</p>
+                </div>
+            </div>
+        </>
+    )
+}
+
+function Postcreation({cookies}){
+
+    const [post, setPost] = useState({});
+
+    const [image, setImage] = useState({data: ""});
+
+    const handleFileChange = (e) => {
+        const img = {
+        data: e.target.files[0],
+        }
+        setImage(img)
+    }
+
+    const handleSubmit = async () => {
+        const formData = new FormData();
+        formData.append('file', image.data);
+
+        await fetch('http://localhost:8080/api/upload', {
+            method: 'POST',
+            body: formData,
+            }).then(res => res.json())
+            .then(async (data) => {
+                    await fetch(`http://localhost:8080/api/create-post`, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                    title: "title",
+                    description: "description",
+                    image: data.filename
+                }),
+                headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${cookies.get('Bearer')}`
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data)
+                setPost({})
+            })
+            .catch((e) => {
+                console.log('Something went wrong',e);
+            })
+            })
+            .catch((e)=> {console.log('Image not uploaded', e)})
+        }
+
+        // Create a reference to the hidden file input element
+        const hiddenFileInput = useRef(null);
+        
+        const handleClick = event => {
+            hiddenFileInput.current.click();
+        };
+
+    return(
+        <>
+            <div className="post-creation">
+                <div className="header">
+                    <div className="share">
+                        <img src={pencilIcon} />
+                        <p>Share a Post</p>
+                    </div>
+                    <div className="upload" onClick={handleClick}>
+                        <img src={imageIcon} />
+                        <p>Upload an Image</p>
+                        <input ref={hiddenFileInput} onChange={handleFileChange} type="file" id="file" style={{display: "none"}} />
+                    </div>
+                    <div className="write">
+                        <img src={penIcon} />
+                        <p>Write an Article</p>
+                    </div>
+                </div>
+                <div className="body">
+                    <div className="user">
+                        <img src={userIcon} />
+                        <Textarea border={"none"} placeholder={"Write your thoughts..."} />
+                    </div>
+                </div>
+                <div className="footer">
+                    <Button backgroundColor={"#1E2835"} color={"white"}>Discard</Button>
+                    <Button backgroundColor={"#008CF8"} color={"white"} onClick={handleSubmit}>Publish</Button>
                 </div>
             </div>
         </>

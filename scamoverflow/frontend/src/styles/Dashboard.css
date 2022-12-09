@@ -97,6 +97,15 @@
 .dashboard-content
 .middle-column
 .post-creation
+.header
+.write{
+    display: none;
+}
+
+.dashboard-wrapper
+.dashboard-content
+.middle-column
+.post-creation
 .header > div{
     display: flex;
     flex-direction: row;

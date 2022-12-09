@@ -11,19 +11,19 @@ const bcrypt = require("bcrypt");
 //Import user model
 const User = require("../models/user");
 const Ticket = require("../models/ticket");
-const Message = require("../models/message");
+const Post = require("../models/post");
 
 //Import JSON Web Token
 const jwt = require("jsonwebtoken");
 
 //Import Multer for file uploading
-//const multer = require("multer");
+const multer = require("multer");
 const path = require("path");
 
-/*
+
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, '../server/src/public/')
+        cb(null, '../backend/src/public/')
     },
     filename: (req, file, cb) => {
         cb(null, Date.now() + path.extname(file.originalname))
@@ -31,7 +31,7 @@ const storage = multer.diskStorage({
 })
 
 const upload = multer({storage: storage}).single('file')
-*/
+
 
 /**
  * -----------------------
@@ -39,8 +39,8 @@ const upload = multer({storage: storage}).single('file')
  * -----------------------
  */
 
-/*
-router.post("/upload",(req, res) => {
+
+router.post("/upload", (req, res) => {
     upload(req, res, (err) => {
         if (err){
             console.log(JSON.stringify(err));
@@ -51,25 +51,28 @@ router.post("/upload",(req, res) => {
     }
     })
 })
-*/
 
-router.post("/reopen-ticket", async (req, res) => {
-    const { ticketId, category, title, description, email } = req.body;
-    const newTicket = new Ticket({
-        category,
-        title,
-        message: description,
-        email,
-        adminId: '',
-        response: ''
-    })
+router.post("/create-post", verifyToken, async (req, res) => {
+    try {
 
+        const userId = req.userId;
 
-    await Ticket.findByIdAndDelete({ _id: ticketId });
+        //const { name, phone, email, password, image } = req.body;
+        
+        const { title, description, image } = req.body;
 
-    await newTicket.save();
+        const newPost = new Post({
+            userId: userId,
+            title: title,
+            description: description,
+            image: image            
+        })
+        await newPost.save();
 
-    res.status(200).json({"message": "Ticket reopened"})
+        res.status(200).json({ success: "Post Created!" });
+    } catch (e) {
+        console.log("Request error: " + e);
+    }
 })
 
 router.post("/signup", async (req, res) => {
@@ -128,73 +131,10 @@ router.post("/login", async (req, res) => {
     }
 })
 
-router.post("/save-message", async (req, res) => {
-    try {
-        const { message, author, room, image, isImage } = req.body;
-        
-        const newMessage = new Message({
-            message: message,
-            author: author,
-            room: room,
-            image: image,
-            isImage: isImage
-        })
-        await newMessage.save();
-
-        res.status(200).json({ message: "Message saved" });
-    } catch (e) {
-        console.log("Request error: " + e);
-    }
-})
-
-router.post("/edit-message", async (req, res) => {
-    try {
-        const { id, content } = req.body;
-        await Message.updateOne({_id: id}, {$set : {message: content}});
-
-        res.status(200).json({ message: "Message updated" });
-
-    } catch (error) {
-        console.log(error)
-    }
-})
-
-router.post("/edit-ticket", async (req, res) => {
-    try {
-        
-        const { id, content, response } = req.body;
-
-        await Ticket.updateOne({_id: id}, {$set : {title: content, response: response}});
-
-        res.status(200).json({ message: "Ticket updated" });
-
-    } catch (error) {
-        console.log(error)
-    }
-})
-
-router.get("/get-messages", async (req, res) => {
-    const messages = await Message.find({}).sort({createdAt: 1});
-
-    res.status(200).json({ messages });
-})
-
-router.post("/delete-message", async (req, res) => {
-    try {
-        const { id } = req.body;
-        await Message.deleteOne({_id: id});
-
-        res.status(200).json({ message: "Message deleted" });
-    } catch (e) {
-        console.log("Request error: " + e);
-    }
-})
-
 router.post("/get-user", verifyToken, async (req, res) => {
     try {
         const userId = req.userId;
         const { profileId } = req.body;
-
 
         const user = await User.findById({_id: profileId}, {password: 0});
 

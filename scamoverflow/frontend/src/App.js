@@ -24,7 +24,6 @@ function App() {
    * 7) Allow admins to delete posts
    * 8) Allow associates to report comments
    * 9) Allow users to edit their profile information
-   * 10) Allow users to view the profile of the moderators
    * 
    */
 
@@ -70,7 +69,7 @@ function App() {
       <BrowserRouter>
       <Navbar userId={userId} />
         <Routes>
-          <Route index path="/" element={<Dashboard />} />
+          <Route index path="/" element={<Dashboard cookies={cookies} />} />
           <Route path="/login" element={<Login onRegister={handleRegister} cookies={cookies} />} />
           <Route path="/admins" element={<Admins />} />
           <Route path="/open-ticket" element={logged ? <Form cookies={cookies} /> : <Login onRegister={handleRegister} cookies={cookies} />} />
