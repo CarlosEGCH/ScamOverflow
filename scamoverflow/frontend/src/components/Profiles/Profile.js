@@ -7,11 +7,39 @@ import userCircle from "../../assets/user-profile-circle.svg"
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 
+import { Spinner } from "@chakra-ui/react"
+
 export default function Profile({cookies}){
 
     const params = useParams();
 
     const [user, setUser] = useState({});
+
+    const [posts, setPosts] = useState([]);
+
+    const [loading, setLoading] = useState(true);
+
+    const getUserPosts = () => {
+
+        fetch(`http://localhost:8080/api/get-user-posts`, {
+            method: 'POST',
+            body: JSON.stringify({
+            userid: params.userid
+            }),
+            headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            setPosts(data.posts);
+            setLoading(false);
+        })
+        .catch((e) => {
+            console.log("Something went wrong ", e);
+        })
+    }
 
     const getModerators = () => {
         fetch(`http://localhost:8080/api/get-user`, {
@@ -36,6 +64,7 @@ export default function Profile({cookies}){
 
     useEffect(() => {
         getModerators();
+        getUserPosts();
     }, [])
 
     return(
@@ -53,8 +82,9 @@ export default function Profile({cookies}){
                     <div className="right-column">
                         <p className="title">Posts</p>
                         <div className="posts">
-                            <Post />
-                            <Post />
+                            {loading ? <Spinner /> : posts.map((post, key) => {
+                                return( <Post post={post} key={key} />)
+                            })}
                         </div>
                     </div>
                 </div>
@@ -63,16 +93,16 @@ export default function Profile({cookies}){
     )
 }
 
-function Post(){
+function Post({post}){
 
 
     return(
         <>
             <div className="post-wrapper">
-                <p className="title">Phishing Cases</p>
-                <img className="post-image" src={post1} />
+                <p className="title">{post.title}</p>
+                <img className="post-image" src={require("../../../../backend/src/public/"+post.image)} />
                 <p className="description">
-                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quibusdam eveniet saepe repellat, inventore at sunt laudantium repudiandae ea exercitationem laboriosam praesentium unde eum nulla mollitia magni enim, omnis consectetur magnam.
+                    {post.description}
                 </p>
                 <div className="feedback">
                     <img src={eyeIcon} />

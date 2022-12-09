@@ -65,7 +65,7 @@ function Post({post}){
                         <p style={{color:"black", fontSize:"16px", fontWeight:"600"}}>{post.name}</p>
                         <p style={{color:"#558491", fontSize:"14px"}}>{post.occupation}</p>
                     </div>
-                    <p style={{color:"#558491", fontSize:"14px", alignSelf:"center"}}>{post.date}</p>
+                    <p style={{color:"#558491", fontSize:"14px", alignSelf:"center", visibility: "hidden"}}>October 22, 2022</p>
                 </div>
                 <div className="body">
                     <p style={{fontSize: "22px", fontWeight: "500"}}>{post.title}</p>

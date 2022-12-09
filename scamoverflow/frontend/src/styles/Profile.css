@@ -137,11 +137,19 @@ img{
 .profile-wrapper
 .profile-content
 .right-column
+.post-wrapper{
+    width: 100%;
+}
+
+.profile-wrapper
+.profile-content
+.right-column
 .post-wrapper
 .description{
     color: #558491;
     font-size: 14px;
     font-weight: 500;
+    min-width: 100%;
 }
 
 .profile-wrapper

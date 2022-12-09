@@ -166,6 +166,23 @@ router.get("/get-posts", async (req, res) => {
 
 })
 
+router.post("/get-user-posts", async (req, res) => {
+
+    try {
+        
+        const { userid } = req.body;
+
+        console.log(userid)
+
+        const posts = await Post.find({userId: {$eq: userid}})
+
+        res.status(200).json({posts: posts})
+
+    } catch (error) {
+        console.log(error)
+    }
+})
+
 router.post("/answer-ticket", async (req, res) => {
     try {
         
