@@ -63,16 +63,6 @@
 .middle-column
 .posts
 .post-wrapper
-.body
-img{
-    
-}
-
-.dashboard-wrapper
-.dashboard-content
-.middle-column
-.posts
-.post-wrapper
 .feedback{
     border-bottom: 1px solid #D1D2D2;
     display: flex;
@@ -126,6 +116,63 @@ p{
     gap: 10px;
 }
 
+.dashboard-wrapper
+.dashboard-content
+.middle-column
+.posts
+.post-wrapper
+.comment-section{
+    display: flex;
+    flex-direction: column;
+}
+
+.dashboard-wrapper
+.dashboard-content
+.middle-column
+.posts
+.post-wrapper
+.comment-section
+.comment{
+    display: flex;
+    flex-direction: row;
+}
+.dashboard-wrapper
+.dashboard-content
+.middle-column
+.posts
+.post-wrapper
+.comment-section
+.comment
+.content{
+    display: flex;
+    flex-direction: column;
+}
+
+.dashboard-wrapper
+.dashboard-content
+.middle-column
+.posts
+.post-wrapper
+.comment-section
+.comment
+.content
+p:nth-child(1){
+    color: #558491;
+    font-size: 14px;
+    font-weight: 500;
+}
 
 
+.dashboard-wrapper
+.dashboard-content
+.middle-column
+.posts
+.post-wrapper
+.comment-section
+.comment
+.content
+p:nth-child(2){
+    font-size: 16px;
+    font-weight: 500;
+}
 

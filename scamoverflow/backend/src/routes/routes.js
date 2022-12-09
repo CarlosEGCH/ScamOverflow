@@ -199,32 +199,26 @@ try {
     }
 })
 
-router.post("/get-solved-tickets", async (req, res) => {
+router.post("/create-comment", verifyToken, async (req, res) => {
     try {
-        
-        const { profileId } = req.body;
 
-        const solvedTickets = await Ticket.find({ adminId: profileId }).sort({createdAt: -1});
+        const userId = req.userId;
 
-        if(!solvedTickets) return res.status(401).send("No tickets found");
+        const { postid, comment } = req.body;
 
-        return res.status(200).json({ solvedTickets });
+        const user = await User.findById({_id: userId})
 
-    } catch (error) {
-        console.log(error)
-    }
-})
+        const newComment = {
+            userid: userId,
+            name: user.name,
+            comment: comment
+        }
 
-router.post("/delete-faq", async (req, res) => {
-    try {
-        
-        const { id } = req.body;
-        await Faq.findByIdAndDelete({ _id: id });
+        await Post.findOneAndUpdate({_id: postid}, {$push : {"comments": newComment}});
 
-        return res.status(200).json({ message: "FAQ deleted" });
-
-    } catch (error) {
-        console.log(error)
+        res.status(200).json({ success: "Comment Saved!" });
+    } catch (e) {
+        console.log("Request error: " + e);
     }
 })
 

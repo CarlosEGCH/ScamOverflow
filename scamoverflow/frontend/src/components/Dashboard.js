@@ -78,7 +78,7 @@ export default function Dashboard({cookies}){
                             </Select>
                         </div>
                         <div className="posts">
-                            <Posts />
+                            <Posts cookies={cookies} />
                         </div>
                     </div>
                     <div className="right-column">
