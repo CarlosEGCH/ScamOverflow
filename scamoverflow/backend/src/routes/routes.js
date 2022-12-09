@@ -19,6 +19,7 @@ const jwt = require("jsonwebtoken");
 //Import Multer for file uploading
 const multer = require("multer");
 const path = require("path");
+const { findOne } = require('../models/user');
 
 
 const storage = multer.diskStorage({
@@ -57,12 +58,14 @@ router.post("/create-post", verifyToken, async (req, res) => {
 
         const userId = req.userId;
 
-        //const { name, phone, email, password, image } = req.body;
-        
         const { title, description, image } = req.body;
+
+        const user = await User.findById({_id: userId})
 
         const newPost = new Post({
             userId: userId,
+            name: user.name,
+            occupation: user.occupation,
             title: title,
             description: description,
             image: image            
@@ -149,17 +152,18 @@ router.post("/get-user", verifyToken, async (req, res) => {
     }
 })
 
-router.post("/edit-description", async (req, res) => {
+router.get("/get-posts", async (req, res) => {
+
     try {
-        const { id, content } = req.body;
+        
+        const posts = await Post.find();
 
-        await User.updateOne({_id: id}, {$set : {description: content}});
-
-        res.status(200).json({ message: "Description updated" });
+        res.status(200).json({posts: posts})
 
     } catch (error) {
         console.log(error)
     }
+
 })
 
 router.post("/answer-ticket", async (req, res) => {

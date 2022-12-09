@@ -1,12 +1,13 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import "../../styles/Posts.css"
 
-import { Button, Input } from '@chakra-ui/react'
+import { Button, Input, requiredChakraThemeKeys } from '@chakra-ui/react'
 
 import jimmy from "../../assets/jimmy.png"
 import postImage from "../../assets/twitter-hacker.jpg"
 import commentIcon from "../../assets/annotation-typing.svg"
 import eyeIcon from "../../assets/eye.svg" 
+import userCicle from "../../assets/user-profile-circle.svg"
 
 export default function Posts(){
 
@@ -19,7 +20,30 @@ export default function Posts(){
         comments: 5
     }
 
-    const [posts, setPosts] = useState([post,post,post]);
+    const [posts, setPosts] = useState([]);
+
+    const getPosts = () => {
+
+        fetch(`http://localhost:8080/api/get-posts`, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(res => res.json())
+      .then(data => {
+        setPosts(data.posts);        
+      })
+      .catch((e) => {
+        console.log("Something went wrong ", e);
+      })
+
+    }
+
+    useEffect(() => {
+        getPosts()
+    }, [])
 
     return(
         <div className="posts-wrapper">
@@ -36,7 +60,7 @@ function Post({post}){
         <>
             <div className="post-wrapper">
                 <div className="header">
-                    <img src={post.image} />
+                    <img src={userCicle} />
                     <div className="info">
                         <p style={{color:"black", fontSize:"16px", fontWeight:"600"}}>{post.name}</p>
                         <p style={{color:"#558491", fontSize:"14px"}}>{post.occupation}</p>
@@ -44,10 +68,11 @@ function Post({post}){
                     <p style={{color:"#558491", fontSize:"14px", alignSelf:"center"}}>{post.date}</p>
                 </div>
                 <div className="body">
+                    <p style={{fontSize: "22px", fontWeight: "500"}}>{post.title}</p>
+                    <img src={require("../../../../backend/src/public/"+post.image)} />
                     <p className="description">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium voluptates minima temporibus modi expedita numquam dolorem explicabo sed, fugiat doloribus eum ipsa saepe tempora veniam accusamus necessitatibus, corrupti corporis hic!
+                        {post.description}
                     </p>
-                    <img src={postImage} />
                 </div>
                 <div className="feedback">
                     <div className="views">

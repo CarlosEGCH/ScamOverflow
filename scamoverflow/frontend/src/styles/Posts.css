@@ -63,6 +63,16 @@
 .middle-column
 .posts
 .post-wrapper
+.body
+img{
+    
+}
+
+.dashboard-wrapper
+.dashboard-content
+.middle-column
+.posts
+.post-wrapper
 .feedback{
     border-bottom: 1px solid #D1D2D2;
     display: flex;

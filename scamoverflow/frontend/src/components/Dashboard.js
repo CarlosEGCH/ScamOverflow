@@ -156,9 +156,18 @@ function Moderator({moderator}){
 
 function Postcreation({cookies}){
 
-    const [post, setPost] = useState({});
+    const [post, setPost] = useState({title: "", description: ""});
 
     const [image, setImage] = useState({data: ""});
+
+    const handlePostChange = (event) => {
+        setPost((prevState) => {
+            return {
+            ...prevState,
+            [event.target.name]: event.target.value,
+        }
+        })
+    }
 
     const handleFileChange = (e) => {
         const img = {
@@ -179,8 +188,8 @@ function Postcreation({cookies}){
                     await fetch(`http://localhost:8080/api/create-post`, {
                     method: 'POST',
                     body: JSON.stringify({
-                    title: "title",
-                    description: "description",
+                    title: post.title,
+                    description: post.description,
                     image: data.filename
                 }),
                 headers: {
@@ -191,7 +200,6 @@ function Postcreation({cookies}){
             })
             .then(res => res.json())
             .then(data => {
-                console.log(data)
                 setPost({})
             })
             .catch((e) => {
@@ -227,9 +235,9 @@ function Postcreation({cookies}){
                     </div>
                 </div>
                 <div className="body">
+                    <Input name="title" onChange={handlePostChange} placeholder="Add a title for the post..." />
                     <div className="user">
-                        <img src={userIcon} />
-                        <Textarea border={"none"} placeholder={"Write your thoughts..."} />
+                        <Textarea onChange={handlePostChange} border={"none"} placeholder={"Write your thoughts..."} name="description" />
                     </div>
                 </div>
                 <div className="footer">
