@@ -184,54 +184,15 @@ router.post("/get-user-posts", async (req, res) => {
 })
 
 router.post("/answer-ticket", async (req, res) => {
-    try {
+try {
         
-        const { ticketId, email, response, adminId, faq } = req.body;
+        const { ticketid, answer } = req.body;
 
-        const ticket = await Ticket.findOneAndUpdate({ _id: ticketId }, { $set: { response: response, adminId: adminId } }, { new: true });
+        await Ticket.updateOne({_id: ticketid}, {$set : {answer: answer, state: "solved"}});
 
-        const admin = await User.findOne({ _id: ticket.adminId });
+        const tickets = await Ticket.find({})
 
-        /*const transport = nodemailer.createTransport({
-            host: process.env.MAIL_HOST,
-            port: process.env.MAIL_PORT,
-            secure: false,
-            auth: {
-                user: process.env.MAIL_USER,
-                pass: process.env.MAIL_PASS
-            },
-            tls: {
-               ciphers:'SSLv3'
-            }
-        })*/
-
-        if(!ticket) return res.status(401).send("Ticket not found");
-
-        /*await transport.sendMail({
-            from: admin.email,
-            to: email,
-            subject: "Ticket response - WeUMa",
-            html: `<h1>Ticket response</h1>
-                    <p>${ticket.title}</p>
-                    <p>${ticket.message}</p>
-                    <p>${response}</p>
-                    <p>${admin.name}</p>
-                    <p>${admin.email}</p>
-                    `
-
-        })*/
-
-        if(faq){
-            const newFaq = new Faq({
-                title: ticket.title,
-                response: response,
-                pinned: false,
-                category: ticket.category
-            })
-            await newFaq.save();
-        }
-
-        return res.status(200).json({ ticket });
+        return res.status(200).json({ tickets });
 
     } catch (error) {
         console.log(error)
@@ -312,29 +273,16 @@ router.post("/delete-shortcut", async (req, res) => {
     }
 })
 
-router.post("/get-shortcuts", async (req, res) => {
+router.post("/process-ticket", async (req, res) => {
     try {
         
-        const { id } = req.body;
-        const shortcuts = await Shortcut.find({ adminId: id }).sort({createdAt: -1});
+        const { ticketid } = req.body;
 
-        return res.status(200).json({ shortcuts });
+        await Ticket.updateOne({_id: ticketid}, {$set : {state: "processed"}});
 
-    } catch (error) {
-        console.log(error)
-    }
-})
+        const tickets = await Ticket.find({})
 
-router.post("/pin-faq", async (req, res) => {
-    try {
-        
-        const { id } = req.body;
-
-        const faq = await Faq.findOne({ _id: id });
-
-        await Faq.updateOne({_id: id}, {$set : {pinned: !faq.pinned}});
-
-        return res.status(200).json({ message: "FAQ pinned" });
+        return res.status(200).json({ tickets });
 
     } catch (error) {
         console.log(error)
@@ -409,7 +357,8 @@ router.post("/ticket-submit", verifyToken, async (req, res) => {
             phone: user.phone,
             category: category,
             description: description,
-            state: "new"
+            state: "new",
+            answer: ""
         })
 
         await newTicket.save();

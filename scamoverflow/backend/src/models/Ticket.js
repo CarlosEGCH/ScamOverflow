@@ -6,7 +6,8 @@ const ticketSchema = new Schema({
     name: String,
     email: String,
     phone: String,
-    state: String
+    state: String,
+    answer: String
 }, {
     timestamps: true
 })
