@@ -44,7 +44,7 @@ export default function Navbar(props){
 
     return(
         <>
-            {width > 900 ? <Desktop userId={props.userId} logged={props.logged} tickets={props.solvedTickets} /> : <Mobile />}
+            {width > 900 ? <Desktop userid={props.userid} logged={props.logged} tickets={props.solvedTickets} /> : <Mobile />}
         </>
     )
 }
@@ -94,7 +94,7 @@ function Desktop(props){
                             </PopoverContent>
                             </Popover> : ""}
                         </li>
-                        <li onClick={() => navigate("/profile/" + props.userId)}>
+                        <li onClick={() => {navigate("/profile/" + props.userid)}}>
                             <img src={userIcon} />
                         </li>
                     </ul>
