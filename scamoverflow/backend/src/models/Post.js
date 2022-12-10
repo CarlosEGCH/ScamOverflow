@@ -7,7 +7,7 @@ const postSchema = new Schema({
     title: String,
     description: String,
     image: String,
-    comments: Array //userid, user name, comment 
+    //comments: Array //userid, user name, comment 
 }, {
     timestamps: true
 });

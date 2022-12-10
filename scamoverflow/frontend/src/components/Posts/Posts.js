@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import "../../styles/Posts.css"
 
-import { Button, Input, Spinner } from '@chakra-ui/react'
+import { Button, FormControl, FormLabel, Input, Spinner, useDisclosure } from '@chakra-ui/react'
 
 import {
   Accordion,
@@ -23,10 +23,22 @@ import {
   MenuDivider,
 } from '@chakra-ui/react'
 
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  Select
+} from '@chakra-ui/react'
+
 import commentIcon from "../../assets/annotation-typing.svg"
 import eyeIcon from "../../assets/eye.svg" 
 import userCircle from "../../assets/user-profile-circle.svg"
 import dotsIcon from "../../assets/dot-vertical.svg"
+import reportIcon from "../../assets/alert-circle.svg"
 
 export default function Posts({cookies}){
 
@@ -184,6 +196,8 @@ function Post({post, cookies, getPosts}){
 
 function Comment({comment}){
 
+    const { isOpen, onOpen, onClose } = useDisclosure()
+
     return(
         <>
         <div className="comment">
@@ -192,6 +206,36 @@ function Comment({comment}){
                 <p>{comment.name}</p>
                 <p>{comment.comment}</p>
             </div>
+            <Menu>
+            <MenuButton style={{marginLeft: "auto"}}>
+                <img src={reportIcon} style={{width: "20px"}} />
+            </MenuButton>
+            <MenuList>
+                <MenuItem onClick={onOpen}>Report Comment</MenuItem>
+                <Modal isOpen={isOpen} onClose={onClose}>
+                    <ModalOverlay />
+                    <ModalContent>
+                    <ModalHeader>Report Comment</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody>
+                        <p style={{marginBottom: "20px"}}>Comment: {comment.comment}</p>
+                        <Select placeholder='Select Report Reason'>
+                        <option value='option1'>Misinformation (2 reports)</option>
+                        <option value='option2'>Bad Language (3 reports)</option>
+                        <option value='option3'>Spam (0 reports)</option>
+                        </Select>
+                    </ModalBody>
+
+                    <ModalFooter>
+                        <Button colorScheme='red' mr={3} onClick={onClose}>
+                        Ban User
+                        </Button>
+                        <Button variant='ghost'>Report</Button>
+                    </ModalFooter>
+                    </ModalContent>
+                </Modal>
+            </MenuList>
+            </Menu>
         </div>
         </>
     )

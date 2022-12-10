@@ -12,6 +12,7 @@ const bcrypt = require("bcrypt");
 const User = require("../models/user");
 const Ticket = require("../models/ticket");
 const Post = require("../models/post");
+const Comment = require("../models/Comment");
 
 //Import JSON Web Token
 const jwt = require("jsonwebtoken");
@@ -158,7 +159,28 @@ router.get("/get-posts", async (req, res) => {
         
         const posts = await Post.find();
 
-        res.status(200).json({posts: posts})
+        let newPosts = [];
+
+        newPosts = await Promise.all(posts.map(async (post, key) => {
+
+            const newPost = {
+                _id: post._id,
+                userId: post.userId,
+                name: post.name,
+                occupation: post.occupation,
+                title: post.title,
+                description: post.description,
+                image: post.image,
+                comments: []
+            };
+
+            newPost.comments = await Comment.find({postId: post._id});
+
+            return newPost
+            
+        }))
+
+        res.status(200).json({posts: newPosts})
 
     } catch (error) {
         console.log(error)
@@ -171,8 +193,6 @@ router.post("/get-user-posts", async (req, res) => {
     try {
         
         const { userid } = req.body;
-
-        console.log(userid)
 
         const posts = await Post.find({userId: {$eq: userid}})
 
@@ -208,13 +228,16 @@ router.post("/create-comment", verifyToken, async (req, res) => {
 
         const user = await User.findById({_id: userId})
 
-        const newComment = {
-            userid: userId,
+        const newComment = new Comment({
+            postId: postid,
             name: user.name,
-            comment: comment
-        }
+            comment: comment,
+            misinformation: 0,
+            badlanguage: 0,
+            spam: 0
+        })
 
-        await Post.findOneAndUpdate({_id: postid}, {$push : {"comments": newComment}});
+        await newComment.save();
 
         res.status(200).json({ success: "Comment Saved!" });
     } catch (e) {
