@@ -236,8 +236,33 @@ router.post("/delete-post", async (req, res) => {
     }
 })
 
+router.post("/edit-profile", async (req, res) => {
+    try {
+        
+        const { userid, name, occupation, email, phone } = req.body;
 
+        await User.updateOne({_id: userid}, {$set : {name: name, email: email, occupation: occupation, phone: phone}});
+
+        const user = await User.findById({_id: userid})
+
+        return res.status(200).json({ user });
+
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+// =====================
+// =====================
+// =====================
+// =====================
+// =====================
 // END OF THE NEW ROUTES
+// =====================
+// =====================
+// =====================
+// =====================
+// =====================
 
 router.post("/submit-shortcut", async (req, res) => {
     try {
