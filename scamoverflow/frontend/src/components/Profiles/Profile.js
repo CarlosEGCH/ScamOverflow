@@ -23,6 +23,8 @@ export default function Profile({cookies}){
 
     const params = useParams();
 
+    const [profileId, setProfileId] = useState("");
+
     const [user, setUser] = useState({});
 
     const [posts, setPosts] = useState([]);
@@ -119,9 +121,10 @@ export default function Profile({cookies}){
     }
 
     useEffect(() => {
+        setProfileId(params.userid);
         getUser();
         getUserPosts();
-    }, [])
+    }, [params.userid])
 
     return(
         <>
