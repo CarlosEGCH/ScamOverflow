@@ -17,7 +17,6 @@ function App() {
 
   /**
    * Prioritized Functional Requirements
-   * 1) Description of why the account was banned
    * 5) Notify users after a ticket has been answered
    * 
    */
@@ -25,11 +24,38 @@ function App() {
   const cookies = new Cookies();
   const [logged, setLogged] = useState(false);
   const [userId, setUserId] = useState("0");
+  const [loading, setLoading] = useState(true);
 
+  const [solvedTickets, setSolvedTickets] = useState([]);
+
+    const getSolvedTickets = () => {
+
+      setLoading(true);
+
+      fetch(`http://localhost:8080/api/get-user-solved-tickets`, {
+          method: 'POST',
+          body: JSON.stringify({
+            userid: userId
+          }),
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          }
+        })
+        .then(res => res.json())
+        .then((data) => {
+          setSolvedTickets(data.tickets);
+          setLoading(false);
+        })
+        .catch((e) => {
+          setLoading(false);
+          console.log("Something went wrong ", e);
+        })
+    }
 
   const handleRegister = async () => {
     try {
-      
+
       if(cookies.get('Bearer') != null){
 
         await fetch(`http://localhost:8080/api/register`, {
@@ -57,12 +83,13 @@ function App() {
 
   useEffect(() => {
       handleRegister();
-  }, [])
+      getSolvedTickets();
+  }, [loading])
   
 
   return (
       <BrowserRouter>
-      <Navbar userId={userId} />
+      <Navbar userid={userId} logged={logged} solvedTickets={solvedTickets} />
         <Routes>
           <Route index path="/" element={<Dashboard cookies={cookies} />} />
           <Route path="/login" element={<Login onRegister={handleRegister} cookies={cookies} />} />

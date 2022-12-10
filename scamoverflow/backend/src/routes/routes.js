@@ -117,6 +117,8 @@ router.post("/login", async (req, res) => {
 
         const user = await User.findOne({ email: email});
 
+        console.log(user)
+
         if(user.ban != "") return res.status(400).json({ban: user.ban});
         
         if(!user) return res.status(400).send("The email is not associated with any account in existence");
@@ -324,38 +326,6 @@ router.post("/edit-profile", async (req, res) => {
 // =====================
 // =====================
 
-router.post("/submit-shortcut", async (req, res) => {
-    try {
-        const {message, category, adminId} = req.body;
-        console.log(category.toLowerCase())
-        const newShortcut = new Shortcut({
-            message: message,
-            category: category.toLowerCase(),
-            adminId: adminId
-        })
-
-        await newShortcut.save();
-
-        return res.status(200).json(newShortcut);
-
-    } catch (error) {
-        console.log(error)
-    }
-})
-
-router.post("/delete-shortcut", async (req, res) => {
-    try {
-        
-        const { id } = req.body;
-        await Shortcut.findByIdAndDelete({ _id: id });
-
-        return res.status(200).json({ message: "Shortcut deleted" });
-
-    } catch (error) {
-        console.log(error)
-    }
-})
-
 router.post("/process-ticket", async (req, res) => {
     try {
         
@@ -372,51 +342,14 @@ router.post("/process-ticket", async (req, res) => {
     }
 })
 
-router.post("/get-faq", async (req, res) => {
-    try {
-        
-        const { category } = req.body;
+router.post("/get-user-solved-tickets", async (req, res) => {
 
-        const pinnedFaq = await Faq.find({ category: category.toLowerCase(), pinned: true }) || [];
+    const { userid } = req.body;
 
-        const unpinnedFaq = await Faq.find({ category: category.toLowerCase(), pinned: false }).sort({createdAt: -1}) || [];
+    const tickets = await Ticket.find({userid: userid});
 
-        const faq = [...pinnedFaq, ...unpinnedFaq];
-
-        if(!faq) return res.status(401).json({ message: "No faq found" });
-
-        if(faq.length == 0) return res.status(401).json({ message: "No faq found" });
-
-        return res.status(201).json({ faq });
-
-    } catch (error) {
-        console.log(error)
-    }
+    res.status(200).json({tickets:  tickets});
 })
-
-router.post("/faq-submit", async (req, res) => {
-    try {
-        
-        const { question, answer, category, ticketId } = req.body;
-
-        const newFaq = new Faq({
-            title: question,
-            response: answer,
-            category: category,
-            pinned: false
-        })
-        
-        await newFaq.save(async (err, faq) => {
-            if(err) return res.status(401).send(err);
-            await Ticket.findOneAndDelete({_id: ticketId})
-        })
-
-        res.status(201).json("FAQ submitted");
-    } catch (error) {
-        console.log(error)
-    }
-})
-
 
 /**
  * /ticket-submit
@@ -432,9 +365,10 @@ router.post("/ticket-submit", verifyToken, async (req, res) => {
 
         const { category, description } = req.body;
 
-        const user = await User.findOne({ _id: userId});
+        const user = await User.findById({ _id: userId});
 
         const newTicket = new Ticket({
+            userid: user._id,
             name: user.name,
             email: user.email,
             phone: user.phone,

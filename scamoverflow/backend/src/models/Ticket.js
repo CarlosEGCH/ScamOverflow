@@ -1,6 +1,7 @@
 const { Schema, model } = require('mongoose');
 
 const ticketSchema = new Schema({
+    userid: String,
     category: String,
     description: String,
     name: String,

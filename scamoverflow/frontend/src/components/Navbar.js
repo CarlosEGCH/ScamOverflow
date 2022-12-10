@@ -9,7 +9,7 @@ import userIcon from "../assets/user-profile-02.svg"
 import pageLogo from "../assets/scamoverflowlogo.png"
 import menuIcon from "../assets/menu-05.svg"
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useNavigate } from "react-router-dom";
 
@@ -26,13 +26,25 @@ import {
   useDisclosure
 } from '@chakra-ui/react'
 
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverHeader,
+  PopoverBody,
+  PopoverFooter,
+  PopoverArrow,
+  PopoverCloseButton,
+  PopoverAnchor,
+} from '@chakra-ui/react'
+
 export default function Navbar(props){
 
   const { width } = useViewport();
 
     return(
         <>
-            {width > 900 ? <Desktop userId={props.userId} /> : <Mobile />}
+            {width > 900 ? <Desktop userId={props.userId} logged={props.logged} tickets={props.solvedTickets} /> : <Mobile />}
         </>
     )
 }
@@ -63,7 +75,24 @@ function Desktop(props){
                 <div className="navbar-options">
                     <ul>
                         <li>
-                            <img src={bellIcon} />
+                            {props.logged ? <Popover>
+                            <PopoverTrigger>
+                                    <img src={bellIcon} />
+                            </PopoverTrigger>
+                            <PopoverContent fontSize="18px" color="black">
+                                <PopoverArrow />
+                                <PopoverCloseButton />
+                                <PopoverHeader fontWeight="500">Notifications:</PopoverHeader>
+                                <PopoverBody>
+                                    {props.tickets.map((ticket, key) => {
+                                        if(ticket.answer != ""){
+                                            return (<Ticket ticket={ticket} key={key} />);
+                                        }
+                                        return "";
+                                    })}
+                                </PopoverBody>
+                            </PopoverContent>
+                            </Popover> : ""}
                         </li>
                         <li onClick={() => navigate("/profile/" + props.userId)}>
                             <img src={userIcon} />
@@ -72,6 +101,19 @@ function Desktop(props){
                 </div>
             </div>
         </div>
+    )
+}
+
+function Ticket({ticket}){
+
+    return(
+        <>
+            <div className="ticket-wrapper">
+                <p className="category">Category: {ticket.category}</p>
+                <p className="description">Description: {ticket.description}</p>
+                <p className="description">Answer: {ticket.answer}</p>
+            </div>
+        </>
     )
 }
 

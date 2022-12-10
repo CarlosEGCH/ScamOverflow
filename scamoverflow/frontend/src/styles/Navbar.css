@@ -75,6 +75,16 @@ ul li{
     width: 50px;
 }
 
+.navbar-wrapper
+.navbar-container
+.navbar-options
+.ticket-wrapper{
+    background: #FEFEFF;
+    padding: 5px 10px;
+    font-size: 16px;
+    border-bottom: #D1D2D2;
+}
+
 /* ======= Mobile Navbar Styles ======= */
 
 .navbar-mobile-wrapper{
