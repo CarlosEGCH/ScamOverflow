@@ -12,11 +12,21 @@ import {
   Box
 } from '@chakra-ui/react'
 
-import jimmy from "../../assets/jimmy.png"
-import postImage from "../../assets/twitter-hacker.jpg"
+import {
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuItemOption,
+  MenuGroup,
+  MenuOptionGroup,
+  MenuDivider,
+} from '@chakra-ui/react'
+
 import commentIcon from "../../assets/annotation-typing.svg"
 import eyeIcon from "../../assets/eye.svg" 
 import userCircle from "../../assets/user-profile-circle.svg"
+import dotsIcon from "../../assets/dot-vertical.svg"
 
 export default function Posts({cookies}){
 
@@ -89,6 +99,26 @@ function Post({post, cookies, getPosts}){
       })
     }
 
+    const handleDeletePost = () => {
+        fetch(`http://localhost:8080/api/delete-post`, {
+        method: 'POST',
+        body: JSON.stringify({
+            postid: post._id,
+        }),
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+      })
+      .then(res => res.json())
+      .then(data => {
+        getPosts();
+      })
+      .catch((e) => {
+        console.log("Something went wrong ", e);
+      })
+    }
+
     return(
         <>
             <div className="post-wrapper">
@@ -98,7 +128,14 @@ function Post({post, cookies, getPosts}){
                         <p style={{color:"black", fontSize:"16px", fontWeight:"600"}}>{post.name}</p>
                         <p style={{color:"#558491", fontSize:"14px"}}>{post.occupation}</p>
                     </div>
-                    <p style={{color:"#558491", fontSize:"14px", alignSelf:"center", visibility: "hidden"}}>October 22, 2022</p>
+                    <Menu>
+                    <MenuButton style={{marginLeft: "auto"}}>
+                        <img src={dotsIcon} style={{width: "25px"}} />
+                    </MenuButton>
+                    <MenuList>
+                        <MenuItem onClick={handleDeletePost}>Delete Post</MenuItem>
+                    </MenuList>
+                    </Menu>
                 </div>
                 <div className="body">
                     <p style={{fontSize: "22px", fontWeight: "500"}}>{post.title}</p>

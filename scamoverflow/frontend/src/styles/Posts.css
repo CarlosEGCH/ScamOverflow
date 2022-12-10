@@ -27,7 +27,7 @@
 .middle-column
 .posts
 .post-wrapper
-.header img{
+.header img:nth-child(1){
     height: 50px;
     width: 50px;
     border-radius: 100%;
@@ -41,8 +41,7 @@
 .post-wrapper
 .header
 .info{
-    width: 60%;
-    margin-right: 60px;
+    margin-left: 10px;
 }
 
 .dashboard-wrapper

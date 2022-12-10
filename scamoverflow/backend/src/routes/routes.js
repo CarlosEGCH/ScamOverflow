@@ -184,7 +184,7 @@ router.post("/get-user-posts", async (req, res) => {
 })
 
 router.post("/answer-ticket", async (req, res) => {
-try {
+    try {
         
         const { ticketid, answer } = req.body;
 
@@ -222,18 +222,22 @@ router.post("/create-comment", verifyToken, async (req, res) => {
     }
 })
 
-router.post("/delete-ticket", async (req, res) => {
+router.post("/delete-post", async (req, res) => {
     try {
         
-        const { id } = req.body;
-        await Ticket.findByIdAndDelete({ _id: id });
+        const { postid } = req.body;
+        await Post.findByIdAndDelete({ _id: postid });
 
-        return res.status(200).json({ message: "Ticket deleted" });
+
+        return res.status(200).json({ success: "Post deleted successfully" });
 
     } catch (error) {
         console.log(error)
     }
 })
+
+
+// END OF THE NEW ROUTES
 
 router.post("/submit-shortcut", async (req, res) => {
     try {
