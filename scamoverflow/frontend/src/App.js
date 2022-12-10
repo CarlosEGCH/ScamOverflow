@@ -19,7 +19,6 @@ function App() {
    * Prioritized Functional Requirements
    * 1) Description of why the account was banned
    * 5) Notify users after a ticket has been answered
-   * 8) Allow associates to report comments
    * 
    */
 

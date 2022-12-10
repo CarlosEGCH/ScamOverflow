@@ -1,15 +1,19 @@
 import "../../styles/Login.css"
 
 import { Button, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure } from '@chakra-ui/react'
+import { useToast } from '@chakra-ui/react'
 import { useState } from "react"
 import { Navigate, useNavigate } from "react-router-dom"
 
 export default function Login(props){
 
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const toast = useToast()
 
     const [login, setLogin] = useState({email: "", password: ""});
-    const [signup, setSignup] = useState({name: "", email: "", phone: "", password: "", rpassword: "", occupation: ""})
+    const [signup, setSignup] = useState({name: "", email: "", phone: "", password: "", rpassword: "", occupation: ""});
+    const [banMessage, setBanMessage] = useState("");
+
     const navigate = useNavigate();
 
     const handleLoginSubmit = () => {
@@ -25,12 +29,23 @@ export default function Login(props){
         }
       })
       .then(res => res.json())
-      .then(data => {
+      .then(async (data) => {
+        if(data.ban){
+          setBanMessage(data.ban);
+          toast({
+            title: "Your account has been banned",
+            description: `Reason: ${data.ban}`,
+            status: 'error',
+            duration: 9000,
+            isClosable: true,
+          })
+          return;
+        }
         props.cookies.set('Bearer', data.token);
         setLogin({email: "", password: ""});
-        
+        props.onRegister();
+        navigate('/');
       })
-      .then(() => {props.onRegister(); navigate('/');})
       .catch((e) => {
         console.log("Something went wrong ", e);
       })
@@ -130,3 +145,4 @@ export default function Login(props){
         </>
     )
 }
+

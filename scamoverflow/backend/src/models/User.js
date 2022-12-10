@@ -6,7 +6,8 @@ const userSchema = new Schema({
     email: String,
     password: String,
     role: String,
-    occupation: String
+    occupation: String,
+    ban: String
 }, {
     timestamps: true
 });

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import "../../styles/Posts.css"
 
-import { Button, FormControl, FormLabel, Input, Spinner, useDisclosure } from '@chakra-ui/react'
+import { Button, FormControl, FormLabel, Input, Spinner, Textarea, useDisclosure } from '@chakra-ui/react'
 
 import {
   Accordion,
@@ -200,8 +200,14 @@ function Comment({comment}){
 
     const [report, setReport] = useState("");
 
+    const [ban, setBan] = useState("")
+
     const handleReportChange = (e) => {
       setReport(e.target.value)
+    }
+
+    const handleBanChange = (e) => {
+      setBan(e.target.value)
     }
 
     const handleSubmitReport = () => {
@@ -210,6 +216,28 @@ function Comment({comment}){
             body: JSON.stringify({
             commentid: comment._id,
             reason: report
+            }),
+            headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            console.log(data.success)            
+        })
+        .catch((e) => {
+            console.log("Something went wrong ", e);
+      })
+    }
+
+    const handleSubmitBan = () => {
+        fetch(`http://localhost:8080/api/ban-user`, {
+            method: 'POST',
+            body: JSON.stringify({
+                commentid: comment._id,
+                userid: comment.userid,
+                ban: ban
             }),
             headers: {
             'Accept': 'application/json',
@@ -257,10 +285,14 @@ function Comment({comment}){
                             <option value='badlanguage'>Bad Language</option>
                             <option value='spam'>Spam</option>
                         </Select>
+                        <div style={{margin: "20px 0px"}}>
+                            <p>Ban Account:</p>
+                            <Textarea onChange={handleBanChange} value={ban} name="ban" placeholder="Ban description..." />
+                        </div>
                     </ModalBody>
 
                     <ModalFooter>
-                        <Button colorScheme='red' mr={3} onClick={onClose}>
+                        <Button colorScheme='red' mr={3} onClick={() => {onClose(); handleSubmitBan();}}>
                         Ban User
                         </Button>
                         <Button variant='ghost' onClick={() => {onClose(); handleSubmitReport();}}>Report</Button>

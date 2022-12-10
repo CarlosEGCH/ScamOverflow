@@ -20,7 +20,6 @@ const jwt = require("jsonwebtoken");
 //Import Multer for file uploading
 const multer = require("multer");
 const path = require("path");
-const { findOne } = require('../models/user');
 
 
 const storage = multer.diskStorage({
@@ -90,7 +89,7 @@ router.post("/signup", async (req, res) => {
         const user = await User.findOne({ email });
 
         if (user) {
-            return res.status(400).json({error: "User already exists"});
+            return res.status(400).json({error: "Email already exists"});
         }
 
         const newUser = new User({
@@ -100,7 +99,7 @@ router.post("/signup", async (req, res) => {
             password: hash,
             occupation: occupation,
             role: 'user',
-            //image: image
+            ban: ""
         })
         await newUser.save();
 
@@ -118,7 +117,9 @@ router.post("/login", async (req, res) => {
 
         const user = await User.findOne({ email: email});
 
-        if(!user) return res.status(401).send("The email is not associated with any account in existence");
+        if(user.ban != "") return res.status(400).json({ban: user.ban});
+        
+        if(!user) return res.status(400).send("The email is not associated with any account in existence");
 
         const validPass = await bcrypt.compare(password, user.password);
 
@@ -147,6 +148,21 @@ router.post("/get-user", verifyToken, async (req, res) => {
         }else{
             res.status(200).json({user, owner: false});
         }
+
+    } catch (error) {
+        console.log("Request error: " + error);
+    }
+})
+
+router.post("/ban-user", async (req, res) => {
+    try {
+        const { userid, ban, commentid } = req.body;
+
+        await User.findOneAndUpdate({_id: userid}, {$set: {"ban" : ban}});
+
+        await Comment.findByIdAndDelete({_id: commentid});
+
+        res.status(200).json({success: "User banned successfully"});
 
     } catch (error) {
         console.log("Request error: " + error);
@@ -230,6 +246,7 @@ router.post("/create-comment", verifyToken, async (req, res) => {
 
         const newComment = new Comment({
             postId: postid,
+            userid: userId,
             name: user.name,
             comment: comment,
             misinformation: 0,
