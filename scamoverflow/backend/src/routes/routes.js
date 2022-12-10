@@ -245,12 +245,32 @@ router.post("/create-comment", verifyToken, async (req, res) => {
     }
 })
 
+router.post("/report-comment", async (req, res) => {
+    try {
+        
+        const { commentid, reason } = req.body;
+
+        if(reason == "misinformation"){
+            await Comment.findOneAndUpdate({_id: commentid}, {$inc: {"misinformation": 1}});
+        }else if(reason == "badlanguage"){
+            await Comment.findOneAndUpdate({_id: commentid}, {$inc: {"badlanguage": 1}});
+        }else{
+            await Comment.findOneAndUpdate({_id: commentid}, {$inc: {"spam": 1}});
+        }
+
+        return res.status(200).json({ success: "Comment Reported Successfully" });
+
+    } catch (error) {
+        console.log(error)
+    }
+})
+
 router.post("/delete-post", async (req, res) => {
     try {
         
         const { postid } = req.body;
-        await Post.findByIdAndDelete({ _id: postid });
 
+        await Post.findByIdAndDelete({ _id: postid });
 
         return res.status(200).json({ success: "Post deleted successfully" });
 

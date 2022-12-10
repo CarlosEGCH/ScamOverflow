@@ -198,6 +198,33 @@ function Comment({comment}){
 
     const { isOpen, onOpen, onClose } = useDisclosure()
 
+    const [report, setReport] = useState("");
+
+    const handleReportChange = (e) => {
+      setReport(e.target.value)
+    }
+
+    const handleSubmitReport = () => {
+        fetch(`http://localhost:8080/api/report-comment`, {
+            method: 'POST',
+            body: JSON.stringify({
+            commentid: comment._id,
+            reason: report
+            }),
+            headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            console.log(data.success)            
+        })
+        .catch((e) => {
+            console.log("Something went wrong ", e);
+      })
+    }
+
     return(
         <>
         <div className="comment">
@@ -218,11 +245,17 @@ function Comment({comment}){
                     <ModalHeader>Report Comment</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
-                        <p style={{marginBottom: "20px"}}>Comment: {comment.comment}</p>
-                        <Select placeholder='Select Report Reason'>
-                        <option value='option1'>Misinformation (2 reports)</option>
-                        <option value='option2'>Bad Language (3 reports)</option>
-                        <option value='option3'>Spam (0 reports)</option>
+                        <p style={{marginBottom: "10px"}}>Comment: {comment.comment}</p>
+                        <div style={{marginBottom: "10px"}}>
+                            <p style={{fontWeight: "500"}}>Reports: </p>
+                            <p>Misinformation: {comment.misinformation}</p>
+                            <p>Bad Language: {comment.badlanguage}</p>
+                            <p>Spam: {comment.spam}</p>
+                        </div>
+                        <Select value={report} name="report" onChange={handleReportChange} placeholder='Select Report Reason'>
+                            <option value='misinformation'>Misinformation</option>
+                            <option value='badlanguage'>Bad Language</option>
+                            <option value='spam'>Spam</option>
                         </Select>
                     </ModalBody>
 
@@ -230,7 +263,7 @@ function Comment({comment}){
                         <Button colorScheme='red' mr={3} onClick={onClose}>
                         Ban User
                         </Button>
-                        <Button variant='ghost'>Report</Button>
+                        <Button variant='ghost' onClick={() => {onClose(); handleSubmitReport();}}>Report</Button>
                     </ModalFooter>
                     </ModalContent>
                 </Modal>
