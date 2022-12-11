@@ -44,7 +44,7 @@ export default function Navbar(props){
 
     return(
         <>
-            {width > 900 ? <Desktop userid={props.userid} logged={props.logged} tickets={props.solvedTickets} /> : <Mobile />}
+            {width > 900 ? <Desktop cookies={props.cookies} userid={props.userid} logged={props.logged} tickets={props.solvedTickets} /> : <Mobile />}
         </>
     )
 }
@@ -52,6 +52,11 @@ export default function Navbar(props){
 function Desktop(props){
 
     const navigate = useNavigate();
+
+    const handleLogout = () => {
+        props.cookies.remove("Bearer");
+        navigate(0);
+    }
 
     return(
         <div className="navbar-wrapper">
@@ -97,6 +102,7 @@ function Desktop(props){
                         <li onClick={() => {navigate("/profile/" + props.userid)}}>
                             <img src={userIcon} />
                         </li>
+                        {props.logged ? <Button color="black" onClick={handleLogout}>Logout</Button> : ""}
                     </ul>
                 </div>
             </div>

@@ -117,6 +117,7 @@ router.post("/login", async (req, res) => {
 
         const user = await User.findOne({ email: email});
 
+        console.log("Logging in")
         console.log(user)
 
         if(user.ban != "") return res.status(400).json({ban: user.ban});

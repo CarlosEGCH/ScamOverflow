@@ -73,6 +73,8 @@ ul{
 .navbar-options
 ul li{
     width: 50px;
+    display: flex;
+    align-items: center;
 }
 
 .navbar-wrapper

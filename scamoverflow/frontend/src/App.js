@@ -89,7 +89,7 @@ function App() {
 
   return (
       <BrowserRouter>
-      <Navbar userid={userId} logged={logged} solvedTickets={solvedTickets} />
+      <Navbar cookies={cookies} userid={userId} logged={logged} solvedTickets={solvedTickets} />
         <Routes>
           <Route index path="/" element={<Dashboard cookies={cookies} />} />
           <Route path="/login" element={<Login onRegister={handleRegister} cookies={cookies} />} />
