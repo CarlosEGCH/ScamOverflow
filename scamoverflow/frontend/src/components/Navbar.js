@@ -38,6 +38,8 @@ import {
   PopoverAnchor,
 } from '@chakra-ui/react'
 
+import { Badge } from '@chakra-ui/react'
+
 export default function Navbar(props){
 
   const { width } = useViewport();
@@ -82,7 +84,10 @@ function Desktop(props){
                         <li>
                             {props.logged ? <Popover>
                             <PopoverTrigger>
-                                    <img src={bellIcon} />
+                                    <div>
+                                        <img src={bellIcon} />
+                                        <Badge style={{position: "absolute", transform: "translate(-10px, -5px)", fontSize: "12px", background: "#40ACFF"}}>{props.tickets.length}</Badge>
+                                    </div>
                             </PopoverTrigger>
                             <PopoverContent fontSize="18px" color="black">
                                 <PopoverArrow />
@@ -115,6 +120,7 @@ function Ticket({ticket}){
     return(
         <>
             <div className="ticket-wrapper">
+                <p className="alert">Ticket Answered!</p>
                 <p className="category">Category: {ticket.category}</p>
                 <p className="description">Description: {ticket.description}</p>
                 <p className="description">Answer: {ticket.answer}</p>

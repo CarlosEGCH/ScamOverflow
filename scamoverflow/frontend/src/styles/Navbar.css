@@ -84,7 +84,16 @@ ul li{
     background: #FEFEFF;
     padding: 5px 10px;
     font-size: 16px;
-    border-bottom: #D1D2D2;
+    border-bottom: 1px solid #D1D2D2;
+}
+
+.navbar-wrapper
+.navbar-container
+.navbar-options
+.ticket-wrapper
+.alert{
+    font-weight: 500;
+    font-size: 18px;
 }
 
 /* ======= Mobile Navbar Styles ======= */

@@ -149,7 +149,29 @@ function Ticket({ticket, setLoading, setTickets}){
       .catch((e) => {
         console.log("Something went wrong ", e);
       })
+    }
 
+    const handleDeleteTicket = () => {
+        setLoading(true);
+
+        fetch(`http://localhost:8080/api/delete-ticket`, {
+        method: 'POST',
+        body: JSON.stringify({
+            ticketid: ticket._id,
+        }),
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(res => res.json())
+      .then(data => {
+        setTickets(data.tickets);
+        setLoading(false);
+      })
+      .catch((e) => {
+        console.log("Something went wrong ", e);
+      })
     }
 
 
@@ -168,8 +190,8 @@ function Ticket({ticket, setLoading, setTickets}){
                 <p className="date">October 22, 2022</p>
                 <div className="footer">
                     <img src={checkIcon} onClick={handleProcessTicket} />
-                    <img src={banTicket} />
-                    <img src={openChat} />
+                    <img src={banTicket} onClick={handleDeleteTicket} />
+                    <img style={{display: "none"}} src={openChat} />
                 </div>
             </div>
         </>
@@ -189,8 +211,8 @@ function Ticket({ticket, setLoading, setTickets}){
                 <p className="date">October 22, 2022</p>
                 <div className="footer">
                     <img src={checkIcon} onClick={onOpen} />
-                    <img src={banTicket} />
-                    <img src={openChat} />
+                    <img src={banTicket} onClick={handleDeleteTicket} />
+                    <img style={{display: "none"}} src={openChat} />
                 </div>
             <Modal
                 isOpen={isOpen}

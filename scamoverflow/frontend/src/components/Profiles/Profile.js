@@ -141,7 +141,7 @@ export default function Profile({cookies}){
                         {owner ? <img onClick={onOpen} src={editIcon} style={{marginRight: "200px"}} /> : ""}
                     </div>
                     <div className="right-column">
-                        <p className="title">Posts</p>
+                        <p className="title" style={{borderBottom: "2px solid black"}}>Posts</p>
                         <div className="posts">
                             {loading ? <Spinner /> : posts.map((post, key) => {
                                 return( <Post post={post} key={key} />)

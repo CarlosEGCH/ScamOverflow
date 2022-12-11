@@ -14,7 +14,7 @@
     border-radius: 14px;
     width: 70%;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
 }
 
 .profile-wrapper
@@ -23,8 +23,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 50%;
-    padding: 120px 0px;
+    width: 100%;
+    padding: 60px 0px;
 }
 
 
@@ -90,17 +90,16 @@ img:nth-child(1){
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 50%;
-    padding: 120px 0px;
+    width: 100%;
+    padding: 10px 0px;
 }
 
 .profile-wrapper
 .profile-content
 .right-column
 .posts{
-    display: flex;
-    flex-direction: column;
-    gap: 50px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
 }
 
 .profile-wrapper

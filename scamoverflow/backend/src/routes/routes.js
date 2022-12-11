@@ -238,6 +238,22 @@ router.post("/answer-ticket", async (req, res) => {
     }
 })
 
+router.post("/delete-ticket", async (req, res) => {
+    try {
+        
+        const { ticketid } = req.body;
+
+        await Ticket.findByIdAndDelete({_id: ticketid});
+
+        const tickets = await Ticket.find();
+
+        return res.status(200).json({ tickets });
+
+    } catch (error) {
+        console.log(error)
+    }
+})
+
 router.post("/create-comment", verifyToken, async (req, res) => {
     try {
 

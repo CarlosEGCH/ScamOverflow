@@ -26,6 +26,8 @@ export default function Dashboard({cookies, role}){
 
     const [moderators, setModerators] = useState([]);
 
+    const navigate = useNavigate();
+
     const getModerators = () => {
         fetch(`http://localhost:8080/api/get-moderators`, {
         method: 'GET',
@@ -62,7 +64,7 @@ export default function Dashboard({cookies, role}){
                             </div>
                             <div className="footer">
                                 <p>Create an account, let us help you.</p>
-                                <Button color={"white"} backgroundImage={"linear-gradient(180deg, #008CF8 0%, #9CD4FF 100%);"}>Start Now!</Button>
+                                <Button onClick={() => {navigate("/login")}} color={"white"} backgroundImage={"linear-gradient(180deg, #008CF8 0%, #9CD4FF 100%);"}>Start Now!</Button>
                             </div>
                         </div>
                         <div className="graph">
