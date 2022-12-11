@@ -40,7 +40,7 @@ import userCircle from "../../assets/user-profile-circle.svg"
 import dotsIcon from "../../assets/dot-vertical.svg"
 import reportIcon from "../../assets/alert-circle.svg"
 
-export default function Posts({cookies}){
+export default function Posts({cookies, role}){
 
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true)
@@ -74,13 +74,13 @@ export default function Posts({cookies}){
     return(
         <div className="posts-wrapper">
             {loading ? "" : posts.map((post, key) => {
-              return (<Post post={post} key={key} cookies={cookies} getPosts={getPosts} />)
+              return (<Post role={role} post={post} key={key} cookies={cookies} getPosts={getPosts} />)
             })}
         </div>
     )
 }
 
-function Post({post, cookies, getPosts}){
+function Post({post, cookies, getPosts, role}){
 
     const [comment, setComment] = useState("");
 
@@ -140,14 +140,14 @@ function Post({post, cookies, getPosts}){
                         <p style={{color:"black", fontSize:"16px", fontWeight:"600"}}>{post.name}</p>
                         <p style={{color:"#558491", fontSize:"14px"}}>{post.occupation}</p>
                     </div>
-                    <Menu>
+                    {role == "admin" ? <Menu>
                     <MenuButton style={{marginLeft: "auto"}}>
                         <img src={dotsIcon} style={{width: "25px"}} />
                     </MenuButton>
                     <MenuList>
                         <MenuItem onClick={handleDeletePost}>Delete Post</MenuItem>
                     </MenuList>
-                    </Menu>
+                    </Menu> : <div style={{marginLeft: "auto"}}></div>}
                 </div>
                 <div className="body">
                     <p style={{fontSize: "22px", fontWeight: "500"}}>{post.title}</p>
@@ -178,7 +178,7 @@ function Post({post, cookies, getPosts}){
                         <AccordionPanel pb={4}>
                             <div className="comment-section">
                                 {post.comments.map((comment, key) => {
-                                    return(<Comment key={key} comment={comment} />)
+                                    return(<Comment role={role} key={key} comment={comment} />)
                                 })}
                             </div>
                         </AccordionPanel>
@@ -194,7 +194,7 @@ function Post({post, cookies, getPosts}){
     )
 }
 
-function Comment({comment}){
+function Comment({comment, role}){
 
     const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -285,16 +285,16 @@ function Comment({comment}){
                             <option value='badlanguage'>Bad Language</option>
                             <option value='spam'>Spam</option>
                         </Select>
-                        <div style={{margin: "20px 0px"}}>
+                        {role == "admin" ? <div style={{margin: "20px 0px"}}>
                             <p>Ban Account:</p>
                             <Textarea onChange={handleBanChange} value={ban} name="ban" placeholder="Ban description..." />
-                        </div>
+                        </div> : ""}
                     </ModalBody>
 
                     <ModalFooter>
-                        <Button colorScheme='red' mr={3} onClick={() => {onClose(); handleSubmitBan();}}>
+                        {role == "admin" ? <Button colorScheme='red' mr={3} onClick={() => {onClose(); handleSubmitBan();}}>
                         Ban User
-                        </Button>
+                        </Button> : ""}
                         <Button variant='ghost' onClick={() => {onClose(); handleSubmitReport();}}>Report</Button>
                     </ModalFooter>
                     </ModalContent>

@@ -44,7 +44,7 @@ export default function Navbar(props){
 
     return(
         <>
-            {width > 900 ? <Desktop cookies={props.cookies} userid={props.userid} logged={props.logged} tickets={props.solvedTickets} /> : <Mobile />}
+            {width > 900 ? <Desktop role={props.role} cookies={props.cookies} userid={props.userid} logged={props.logged} tickets={props.solvedTickets} /> : <Mobile />}
         </>
     )
 }
@@ -71,10 +71,10 @@ function Desktop(props){
                             <img src={messageIcon} />
                             <p>Report Scam</p>
                         </li>
-                        <li onClick={() => navigate("/tickets")}>
+                        {props.role == "admin" ? <li onClick={() => navigate("/tickets")}>
                             <img src={ticketIcon} />
                             <p>Tickets</p>
-                        </li>
+                        </li> : ""}
                     </ul>
                 </div>
                 <div className="navbar-options">

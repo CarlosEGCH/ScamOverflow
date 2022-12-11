@@ -22,7 +22,7 @@ import { useEffect, useState, useRef } from "react"
 
 import { useNavigate } from "react-router-dom";
 
-export default function Dashboard({cookies}){
+export default function Dashboard({cookies, role}){
 
     const [moderators, setModerators] = useState([]);
 
@@ -69,7 +69,7 @@ export default function Dashboard({cookies}){
                         </div>
                     </div>
                     <div className="middle-column">
-                        <Postcreation cookies={cookies} />
+                        {role == "admin" ? <Postcreation cookies={cookies} /> : ""}
                         <div className="filter">
                             <Select color={"#558491"} borderColor={"#558491"}>
                                 <option value='option1'>Popular</option>
@@ -78,7 +78,7 @@ export default function Dashboard({cookies}){
                             </Select>
                         </div>
                         <div className="posts">
-                            <Posts cookies={cookies} />
+                            <Posts role={role} cookies={cookies} />
                         </div>
                     </div>
                     <div className="right-column">

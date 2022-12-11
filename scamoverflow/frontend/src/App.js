@@ -25,6 +25,7 @@ function App() {
   const [logged, setLogged] = useState(false);
   const [userId, setUserId] = useState("0");
   const [loading, setLoading] = useState(true);
+  const [role, setRole] = useState("");
 
   const [solvedTickets, setSolvedTickets] = useState([]);
 
@@ -69,6 +70,7 @@ function App() {
       .then(res => res.json())
       .then( async (data) => {
         setLogged(true);
+        setRole(data.role);
         setUserId(data._id);
       })
       .catch((e) => {
@@ -89,13 +91,12 @@ function App() {
 
   return (
       <BrowserRouter>
-      <Navbar cookies={cookies} userid={userId} logged={logged} solvedTickets={solvedTickets} />
+      <Navbar role={role} cookies={cookies} userid={userId} logged={logged} solvedTickets={solvedTickets} />
         <Routes>
-          <Route index path="/" element={<Dashboard cookies={cookies} />} />
+          <Route index path="/" element={<Dashboard role={role} cookies={cookies} />} />
           <Route path="/login" element={<Login onRegister={handleRegister} cookies={cookies} />} />
-          <Route path="/admins" element={<Admins />} />
           <Route path="/open-ticket" element={logged ? <Form cookies={cookies} /> : <Login onRegister={handleRegister} cookies={cookies} />} />
-          <Route path="/tickets" element={logged ? <Admin cookies={cookies} /> : <Login onRegister={handleRegister} cookies={cookies} />} />
+          <Route path="/tickets" element={logged && role == "admin" ? <Admin cookies={cookies} /> : <Login onRegister={handleRegister} cookies={cookies} />} />
           <Route path="/profile/:userid" element={logged ? <Profile cookies={cookies} /> : <Login onRegister={handleRegister} cookies={cookies} />} />
         </Routes>
     </BrowserRouter>
