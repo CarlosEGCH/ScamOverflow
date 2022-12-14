@@ -4,7 +4,7 @@ MongoDB is necessary to run this project!
 
 ## Installation:
 
-Download this project and create a file inside the **/backend** folder.
+Download this project and create a file inside the **/backend** folder called **.env**.
 Inside this file, the credentials for the following syntax must be written.
 
 ```
