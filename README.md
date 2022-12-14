@@ -1,8 +1,8 @@
-"# ScamOverflow!"
+# ScamOverflow!
 
 MongoDB is necessary to run this project!
 
-#Installation:
+## Installation:
 
 Download this project and create a file inside the **/backend** folder.
 Inside this file, the credentials for the following syntax must be written.
@@ -16,7 +16,7 @@ Where **<URL of the database>** is the URL of the MongoDB database (if running i
 
 Inside the **/backend** folder create a console and run **npm install** to install all packages. Do the same process inside the **/frontend** folder.
 
-#Running the Project
+## Running the Project
 
 To run the project, go inside the **/backend** folder and run the command: **npm run dev**. This will start the server and connect to the database.
 
