@@ -1,0 +1,133 @@
+.navbar-wrapper{
+    height: 70px;
+    width: 100vw;
+    background-color: #1E2835;
+    color: #40ACFF;
+    padding: 0px 300px;
+}
+
+.navbar-wrapper .navbar-container{
+    display: flex;
+    height: 100%;
+    flex-direction: row;
+    align-items: center;
+    font-size: 1.2rem;
+}
+
+.navbar-wrapper
+.navbar-container
+.navbar-logo{
+    display: flex;
+    flex-direction: row;
+    width: 300px;
+    font-size: 24px;
+    height: 100%;
+    align-items: center;
+}
+
+.navbar-wrapper
+.navbar-container
+.navbar-logo
+img{
+    width: 50px;
+    height: 50px;
+}
+
+.navbar-wrapper
+.navbar-container
+.navbar-links{
+    margin-left: 100px;
+    width: 800px;
+    font-size: 18px;
+}
+
+.navbar-wrapper
+.navbar-container
+.navbar-links
+ul{
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+}
+.navbar-wrapper
+.navbar-container
+.navbar-links
+ul li{
+    width: 200px;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.navbar-wrapper
+.navbar-container
+.navbar-options
+ul{
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+}
+
+.navbar-wrapper
+.navbar-container
+.navbar-options
+ul li{
+    width: 50px;
+    display: flex;
+    align-items: center;
+}
+
+.navbar-wrapper
+.navbar-container
+.navbar-options
+.ticket-wrapper{
+    background: #FEFEFF;
+    padding: 5px 10px;
+    font-size: 16px;
+    border-bottom: 1px solid #D1D2D2;
+}
+
+.navbar-wrapper
+.navbar-container
+.navbar-options
+.ticket-wrapper
+.alert{
+    font-weight: 500;
+    font-size: 18px;
+}
+
+/* ======= Mobile Navbar Styles ======= */
+
+.navbar-mobile-wrapper{
+    height: 50px;
+    width: 100vw;
+    background-color: #1E2835;
+    color: #40ACFF;
+}
+.navbar-mobile-wrapper
+.navbar-mobile-container{
+    display: flex;
+    height: 100%;
+    flex-direction: row;
+    align-items: center;
+    font-size: 1.1rem;
+    justify-content: space-between;
+    margin: 0px 10px;
+}
+
+.navbar-mobile-wrapper
+.navbar-mobile-container
+.navbar-mobile-logo{
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    align-items: center;
+}
+
+.navbar-mobile-wrapper
+.navbar-mobile-container
+.navbar-mobile-logo
+img{
+    height: 40px;
+    width: 40px;
+}
